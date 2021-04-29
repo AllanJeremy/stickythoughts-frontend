@@ -1,0 +1,221 @@
+<template>
+  <div>
+    <v-card
+      class="pill d-flex align-center justify-space-between px-4"
+      elevation="8"
+      height="4rem"
+    >
+      <template v-if="!isRecording">
+        <span class="font-weight-light">Tap the mic to start recording</span>
+        <v-btn
+          icon
+          color="teal"
+          large
+          :disabled="!recorderIsEnabled"
+          @click="startRecording"
+          ><v-icon>mdi-microphone</v-icon></v-btn
+        >
+      </template>
+      <template v-else>
+        <v-btn
+          icon
+          color="error"
+          large
+          :disabled="!recordingControlsActive"
+          @click="cancelRecording"
+          ><v-icon>mdi-window-close</v-icon></v-btn
+        >
+
+        <div class="d-flex align-center">
+          <v-icon class="pulsating" color="error">mdi-circle </v-icon>
+          <h3 class="ml-1">{{ recordingTimerText | formatTimer }}</h3>
+        </div>
+
+        <v-btn
+          icon
+          color="teal"
+          large
+          :disabled="!recordingControlsActive"
+          @click="completeRecording"
+          ><v-icon>mdi-check</v-icon></v-btn
+        >
+      </template>
+    </v-card>
+  </div>
+</template>
+
+<script>
+import _ from 'lodash'
+
+export default {
+  name: 'AudioRecorder',
+  filters: {
+    formatTimer(timerString) {
+      const formatted = timerString
+        .replace(/\s/, '')
+        .split(':')
+        .map((digitStr) => (digitStr.length === 1 ? `0${digitStr}` : digitStr))
+        .join(':')
+
+      return formatted
+    },
+  },
+  data() {
+    return {
+      isRecording: false,
+      isLoading: false,
+      isUploading: false,
+      timerInterval: null,
+      mediaRecorder: null,
+      audioChunks: [],
+
+      recordingControlsActive: false,
+      recorderIsReady: false,
+      recordingLocalUrl: null,
+      recordingIsSupported: false,
+      recordingDurationSeconds: 0,
+      recordingFile: null,
+    }
+  },
+  computed: {
+    recordingTimerText() {
+      const seconds = this.recordingDurationSeconds % 60
+      const minutes = Math.floor(this.recordingDurationSeconds / 60)
+      const hours = Math.floor(minutes / 60)
+
+      let text = `${minutes % 60}:${seconds}`
+
+      if (hours) {
+        text = `${hours}:${text}`
+      }
+
+      return text
+    },
+    recorderIsEnabled() {
+      const enabled = this.recordingIsSupported && this.recorderIsReady
+
+      return enabled
+    },
+  },
+  created() {
+    this.recordingIsSupported =
+      navigator.mediaDevices && navigator.mediaDevices.getUserMedia
+
+    if (this.recordingIsSupported) {
+      // Get the current user's microphone
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((recordingStream) => {
+          this.mediaRecorder = new MediaRecorder(recordingStream)
+
+          // Setting up various recorder related props
+          this.recorderIsReady = _.isEmpty(this.mediaRecorder)
+        })
+        .catch((err) => {
+          this.$nuxt.$emit('recordingError', err)
+        })
+    } else {
+      const message =
+        'This browser does not the microphone api. Please use a more recent browser.'
+      throw new Error(message)
+    }
+  },
+  methods: {
+    startRecordingTimer() {
+      // Recording controls inactive ~ minimum record time = 3 seconds
+      this.recordingControlsActive = false
+
+      this.timerInterval = setInterval(() => {
+        this.recordingDurationSeconds++
+
+        // Activate recording controls after 2 seconds of recording
+        if (this.recordingDurationSeconds === 1) {
+          // ? Using equality right here 👆🏾 instead of >= to make sure this only runs once
+          this.recordingControlsActive = true
+        }
+      }, 1000)
+    },
+    resetTimer() {
+      clearInterval(this.timerInterval)
+      this.recordingDurationSeconds = 0
+    },
+    startRecording() {
+      // Reset any recording related values that may have been set
+      this.recordingFile = null
+      this.isRecording = true
+      this.recorderIsReady = false
+
+      // Start recording
+      this.mediaRecorder.start()
+      this.startRecordingTimer()
+      //
+
+      this.mediaRecorder.ondataavailable = ({ data }) => {
+        this.audioChunks.push(data)
+      }
+
+      // This event notifies any listeners that recording has started
+      this.$nuxt.$emit('recordingStarted')
+    },
+    stopRecording() {
+      this.isRecording = false
+
+      this.mediaRecorder.stop()
+
+      this.resetTimer()
+
+      // Delay 1 second before allowing for clicking of the record button again
+      setTimeout(() => {
+        this.recorderIsReady = true
+      }, 1000)
+    },
+    cancelRecording() {
+      this.stopRecording()
+
+      // This event notifies any listeners that recording has been cancelled
+      this.$nuxt.$emit('recordingCancelled')
+    },
+    completeRecording() {
+      this.stopRecording()
+
+      this.recordingFile = new Blob(this.audioChunks, { type: 'audio/mpeg-3' })
+      this.recordingLocalUrl = window.URL.createObjectURL(this.recordingFile)
+
+      this.$nuxt.$emit('recordingComplete', {
+        duration: this.recordingDurationSeconds,
+        file: this.recordingFile,
+        localUrl: this.recordingLocalUrl,
+      })
+    },
+  },
+}
+</script>
+
+<style scoped>
+.pill {
+  border-radius: 3rem !important;
+}
+
+@keyframes pulsate {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+
+.pulsating {
+  opacity: 0.8;
+  animation-name: pulsate;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+</style>
