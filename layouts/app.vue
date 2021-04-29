@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- App bar -->
-    <v-app-bar flat max-height="56px">
+    <v-app-bar color="transparent" flat max-height="56px">
       <v-app-bar-nav-icon
         @click.stop="navIsOpen = !navIsOpen"
       ></v-app-bar-nav-icon>
@@ -44,7 +44,7 @@
     </v-navigation-drawer>
 
     <!-- Actual content -->
-    <v-container class="px-8 py-8">
+    <v-container class="px-8 py-4">
       <Nuxt />
     </v-container>
   </v-app>
