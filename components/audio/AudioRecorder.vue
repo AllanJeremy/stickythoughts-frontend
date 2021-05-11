@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+// import _ from 'lodash'
 
 export default {
   name: 'AudioRecorder',
@@ -67,6 +67,7 @@ export default {
       isUploading: false,
       timerInterval: null,
       mediaRecorder: null,
+      recordingStream: {},
       audioChunks: [],
 
       recordingControlsActive: false,
@@ -92,7 +93,7 @@ export default {
       return text
     },
     recorderIsEnabled() {
-      const enabled = this.recordingIsSupported && this.recorderIsReady
+      const enabled = this.recordingIsSupported
 
       return enabled
     },
@@ -100,25 +101,6 @@ export default {
   created() {
     this.recordingIsSupported =
       navigator.mediaDevices && navigator.mediaDevices.getUserMedia
-
-    if (this.recordingIsSupported) {
-      // Get the current user's microphone
-      navigator.mediaDevices
-        .getUserMedia({ audio: true })
-        .then((recordingStream) => {
-          this.mediaRecorder = new MediaRecorder(recordingStream)
-
-          // Setting up various recorder related props
-          this.recorderIsReady = _.isEmpty(this.mediaRecorder)
-        })
-        .catch((err) => {
-          this.$nuxt.$emit('recordingError', err)
-        })
-    } else {
-      const message =
-        'This browser does not the microphone api. Please use a more recent browser.'
-      throw new Error(message)
-    }
   },
   methods: {
     startRecordingTimer() {
@@ -145,13 +127,31 @@ export default {
       this.isRecording = true
       this.recorderIsReady = false
 
-      // Start recording
-      this.mediaRecorder.start()
-      this.startRecordingTimer()
-      //
+      if (this.recordingIsSupported) {
+        // Get the current user's microphone
+        navigator.mediaDevices
+          .getUserMedia({ audio: true })
+          .then(async (recordingStream) => {
+            this.mediaRecorder = await new MediaRecorder(recordingStream)
+            this.recordingStream = recordingStream
+            this.audioChunks = []
 
-      this.mediaRecorder.ondataavailable = ({ data }) => {
-        this.audioChunks.push(data)
+            // Start recording
+            this.mediaRecorder.start(250)
+            this.startRecordingTimer()
+
+            // Capture the recording data
+            this.mediaRecorder.ondataavailable = ({ data }) => {
+              this.audioChunks.push(data)
+            }
+          })
+          .catch((err) => {
+            this.$nuxt.$emit('recordingError', err)
+          })
+      } else {
+        const message =
+          'This browser does not the microphone api. Please use a more recent browser.'
+        throw new Error(message)
       }
 
       // This event notifies any listeners that recording has started
@@ -161,6 +161,9 @@ export default {
       this.isRecording = false
 
       this.mediaRecorder.stop()
+
+      // Stop all tracks being recorded in the stream
+      this.recordingStream.getTracks().forEach((track) => track.stop())
 
       this.resetTimer()
 
@@ -177,8 +180,10 @@ export default {
     },
     completeRecording() {
       this.stopRecording()
+      this.recordingFile = new Blob(this.audioChunks, {
+        type: 'audio/mpeg',
+      })
 
-      this.recordingFile = new Blob(this.audioChunks, { type: 'audio/mpeg-3' })
       this.recordingLocalUrl = window.URL.createObjectURL(this.recordingFile)
 
       this.$nuxt.$emit('recordingComplete', {
@@ -186,6 +191,9 @@ export default {
         file: this.recordingFile,
         localUrl: this.recordingLocalUrl,
       })
+
+      // Cleanup the blob file we are setting after recording and let the Garbage collector handle the rest
+      this.recordingFile = null
     },
   },
 }
