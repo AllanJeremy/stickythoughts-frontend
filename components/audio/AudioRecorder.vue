@@ -45,21 +45,11 @@
 </template>
 
 <script>
-// import _ from 'lodash'
+import { FormatMixin } from '@/mixins/FormatMixin'
 
 export default {
   name: 'AudioRecorder',
-  filters: {
-    formatTimer(timerString) {
-      const formatted = timerString
-        .replace(/\s/, '')
-        .split(':')
-        .map((digitStr) => (digitStr.length === 1 ? `0${digitStr}` : digitStr))
-        .join(':')
-
-      return formatted
-    },
-  },
+  mixins: [FormatMixin],
   data() {
     return {
       isRecording: false,
