@@ -16,6 +16,7 @@
           solo
           color="teal"
           item-color="teal"
+          return-object
         ></v-select>
       </div>
       <div>
@@ -28,6 +29,7 @@
         ></v-textarea>
       </div>
     </section>
+
     <AudioRecorder />
   </div>
 </template>
@@ -40,10 +42,11 @@ export default {
   layout: 'app',
   data() {
     return {
-      selectedCategory: '1',
+      selectedCategory: { text: 'Ideas', value: '1' },
+      categoriesLoading: false,
       categories: [
-        { text: 'Business', value: '1' },
-        { text: 'Ideas', value: '2' },
+        { text: 'Ideas', value: '1' },
+        { text: 'Business', value: '2' },
         { text: 'Meditation', value: '3' },
       ],
     }
@@ -52,6 +55,13 @@ export default {
     return {
       title: 'Record',
     }
+  },
+  created() {
+    this.$nuxt.$on('recordingComplete', (trackDetails) => {
+      trackDetails.title = `Something in "${this.selectedCategory.text}"`
+
+      this.$nuxt.$emit('loadTrack', trackDetails)
+    })
   },
 }
 </script>
