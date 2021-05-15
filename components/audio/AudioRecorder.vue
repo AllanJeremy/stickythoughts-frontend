@@ -28,7 +28,7 @@
 
         <div class="d-flex align-center">
           <v-icon class="pulsating" color="error">mdi-circle </v-icon>
-          <h3 class="ml-1">{{ recordingTimerText | formatTimer }}</h3>
+          <h3 class="ml-1">{{ recordingDurationSeconds | formatTimer }}</h3>
         </div>
 
         <v-btn
@@ -69,19 +69,6 @@ export default {
     }
   },
   computed: {
-    recordingTimerText() {
-      const seconds = this.recordingDurationSeconds % 60
-      const minutes = Math.floor(this.recordingDurationSeconds / 60)
-      const hours = Math.floor(minutes / 60)
-
-      let text = `${minutes % 60}:${seconds}`
-
-      if (hours) {
-        text = `${hours}:${text}`
-      }
-
-      return text
-    },
     recorderIsEnabled() {
       const enabled = this.recordingIsSupported
 

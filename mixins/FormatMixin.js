@@ -1,13 +1,23 @@
+import _ from 'lodash'
+
 export default {
   filters: {
-    formatTimer(timerString) {
-      const formatted = timerString
-        .replace(/\s/, '')
-        .split(':')
-        .map((digitStr) => (digitStr.length === 1 ? `0${digitStr}` : digitStr))
-        .join(':')
+    formatTimer(totalSeconds) {
+      const seconds = parseInt(totalSeconds)
+      const min = Math.floor(seconds / 60)
+      const hours = Math.floor(seconds / 3600)
 
-      return formatted
+      let formattedTime = `${_.padStart(min, 2, '0')}:${_.padStart(
+        seconds,
+        2,
+        '0'
+      )}`
+
+      if (hours > 0) {
+        formattedTime = `${_.padStart(hours, 2, '0')}:${formattedTime}`
+      }
+
+      return formattedTime
     },
   },
 }
