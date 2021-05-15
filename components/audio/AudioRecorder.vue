@@ -142,8 +142,6 @@ export default {
       // Stop all tracks being recorded in the stream
       this.recordingStream.getTracks().forEach((track) => track.stop())
 
-      this.resetTimer()
-
       // Delay 1 second before allowing for clicking of the record button again
       setTimeout(() => {
         this.recorderIsReady = true
@@ -151,6 +149,8 @@ export default {
     },
     cancelRecording() {
       this.stopRecording()
+
+      this.resetTimer()
 
       // This event notifies any listeners that recording has been cancelled
       this.$nuxt.$emit('recordingCancelled')
@@ -170,6 +170,7 @@ export default {
       })
 
       // Cleanup the blob file we are setting after recording and let the Garbage collector handle the rest
+      this.resetTimer()
       this.recordingFile = null
     },
   },
