@@ -1,0 +1,22 @@
+@keyframes pulsate {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+
+.pulsating {
+  opacity: 0.8;
+  animation-name: pulsate;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
