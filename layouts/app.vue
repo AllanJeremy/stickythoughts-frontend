@@ -43,6 +43,9 @@
       </v-list>
     </v-navigation-drawer>
 
+    <!-- Every app page will have an audio player attached to it in the background -->
+    <AudioPlayer />
+
     <!-- Actual content -->
     <v-container class="px-8 py-4">
       <Nuxt />
@@ -51,7 +54,10 @@
 </template>
 
 <script>
+import AudioPlayer from '@/components/audio/AudioPlayer.vue'
+
 export default {
+  components: { AudioPlayer },
   data() {
     return {
       navIsOpen: false,
