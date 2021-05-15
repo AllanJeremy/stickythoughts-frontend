@@ -39,6 +39,7 @@
           color="teal"
           track-color="grey"
           :disabled="!trackDetailsValid"
+          :step="0.05"
           hide-details
         ></v-slider>
       </div>
