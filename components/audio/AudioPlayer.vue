@@ -37,6 +37,7 @@
           :label="trackDetails.duration | formatTimer"
           inverse-label
           color="teal"
+          track-color="grey"
           :disabled="!trackDetailsValid"
           hide-details
         ></v-slider>
