@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { FormatMixin } from '@/mixins/FormatMixin'
+import { FormatMixin } from '@/mixins'
 
 export default {
   name: 'AudioRecorder',
