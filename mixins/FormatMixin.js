@@ -2,8 +2,8 @@ import _ from 'lodash'
 
 export default {
   filters: {
-    formatTimer(totalSeconds) {
-      const seconds = parseInt(totalSeconds)
+    formatTimer(durationInSeconds) {
+      const seconds = parseInt(durationInSeconds) % 60
       const min = Math.floor(seconds / 60)
       const hours = Math.floor(seconds / 3600)
 
