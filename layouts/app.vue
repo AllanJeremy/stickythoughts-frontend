@@ -1,14 +1,21 @@
 <template>
-  <v-app>
+  <v-app style="background-color: #ffefbb">
     <!-- App bar -->
     <v-app-bar color="transparent" flat max-height="56px">
       <v-app-bar-nav-icon
         @click.stop="navIsOpen = !navIsOpen"
       ></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Journable</v-toolbar-title>
-
       <v-spacer></v-spacer>
+
+      <v-btn
+        v-if="trackOpenInBackground"
+        icon
+        class="pulsating"
+        @click="openAudioPlayer"
+      >
+        <v-icon>mdi-play</v-icon>
+      </v-btn>
 
       <v-btn icon>
         <v-icon>mdi-share-variant</v-icon>
@@ -54,6 +61,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import AudioPlayer from '@/components/audio/AudioPlayer.vue'
 
 export default {
@@ -91,7 +99,26 @@ export default {
         },
         { icon: 'mdi-logout-variant', title: 'Logout', link: '/auth/logout' },
       ],
+      somethingIsPlaying: false,
     }
+  },
+  computed: {
+    ...mapState('audio', ['trackOpenInBackground']),
+  },
+  mounted() {
+    this.$nuxt.$on('playing', this.activateSomethingIsPlaying)
+    this.$nuxt.$on('stoppedPlaying', this.deactivateSomethingIsPlaying)
+  },
+  methods: {
+    activateSomethingIsPlaying() {
+      this.somethingIsPlaying = true
+    },
+    deactivateSomethingIsPlaying() {
+      this.somethingIsPlaying = false
+    },
+    openAudioPlayer() {
+      this.$nuxt.$emit('openPlayer')
+    },
   },
 }
 </script>

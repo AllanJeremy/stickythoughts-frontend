@@ -53,6 +53,9 @@
 
 <script>
 import _ from 'lodash'
+
+import { mapActions } from 'vuex'
+
 import { FormatMixin } from '@/mixins'
 
 export default {
@@ -129,8 +132,19 @@ export default {
     currentTimeSeconds(seconds) {
       this.currentSelectedTime = seconds
     },
+    playerIsOpen(isOpen) {
+      // Update the playing in the background state variable
+      const trackOpenInBackground = !isOpen && !_.isEmpty(this.trackDetails)
+      console.log('playing in background:', trackOpenInBackground)
+
+      this.updateTrackOpenInBackground(trackOpenInBackground)
+    },
   },
   created() {
+    this.$nuxt.$on('openPlayer', () => {
+      this.playerIsOpen = true
+    })
+
     // Load a track without playing it
     this.$nuxt.$on('loadTrack', (trackDetails) => {
       this.setupExternalTrack(trackDetails)
@@ -147,6 +161,7 @@ export default {
     this.$nuxt.$on('pauseTrack', () => this.pauseTrack)
   },
   methods: {
+    ...mapActions('audio', ['updateTrackOpenInBackground']),
     setupExternalTrack(trackDetails) {
       // Set up component track details data
       this.trackDetails = trackDetails
