@@ -1,4 +1,5 @@
+import AudioPlayerMixin from './AudioPlayerMixin'
 import FormatMixin from './FormatMixin'
 
 // * EXPORTS
-export { FormatMixin }
+export { AudioPlayerMixin, FormatMixin }
