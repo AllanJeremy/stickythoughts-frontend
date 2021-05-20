@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-tabs class="mb-8" color="teal" slider-color="teal" fixed-tabs>
+    <v-tabs
+      class="mb-8"
+      color="teal"
+      slider-color="teal"
+      background-color="#ffefbb"
+      fixed-tabs
+    >
       <v-tab class="transparent">Record</v-tab>
       <v-tab>History</v-tab>
     </v-tabs>
