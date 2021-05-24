@@ -9,8 +9,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - Audio Journal',
-    title: 'Record your thoughts - Audio Journal',
+    titleTemplate: '%s - StickyThoughts',
+    title: 'Remember Everything - StickyThoughts',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -18,7 +18,7 @@ export default {
         hid: 'description',
         name: 'description',
         content:
-          'Record your thoughts and never forget a single thing with Audio Journal',
+          'Record your thoughts and never forget a single thing with StickyThoughts',
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
@@ -45,13 +45,34 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    '@nuxtjs/toast',
   ],
 
+  toast: {
+    position: 'top-center',
+    duration: 2000,
+    register: [
+      // Register custom toasts
+      {
+        name: 'my-error',
+        message: 'Oops...Something went wrong',
+        options: {
+          type: 'error',
+        },
+      },
+    ],
+  },
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
+      name: 'StickyThoughts - Remember Everything',
+      short_name: 'Affiliates',
       lang: 'en',
     },
+  },
+
+  router: {
+    middleware: 'setLoggedInUserData',
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
