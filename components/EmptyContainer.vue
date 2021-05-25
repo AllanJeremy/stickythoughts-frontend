@@ -33,6 +33,10 @@ export default {
 </script>
 
 <style scoped>
+.body-content {
+  min-width: 15rem;
+  max-width: 100%;
+}
 .body-content,
 .header-content h1,
 h2,
