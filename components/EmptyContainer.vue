@@ -1,5 +1,5 @@
 <template>
-  <v-container class="h-100 d-flex flex-column justify-center">
+  <v-container class="fill-height d-flex flex-column justify-center">
     <section class="text-center header-content">
       <slot name="header"></slot>
     </section>
@@ -49,9 +49,5 @@ img {
   max-height: 15rem;
   max-width: 20rem;
   align-self: center;
-}
-
-.h-100 {
-  height: 100%;
 }
 </style>
