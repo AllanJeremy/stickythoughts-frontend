@@ -227,7 +227,6 @@ export default {
       this.categoryToAdd = _.upperFirst(valueFormatted)
     },
     userData(data) {
-      console.log(data)
       // Do nothing if no user data was found from the database - using dateJoined to check if it is a db record
       if (_.isEmpty(data.name)) return
 
