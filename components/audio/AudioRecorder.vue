@@ -166,6 +166,7 @@ export default {
       this.$nuxt.$emit('recordingComplete', {
         duration: this.recordingDurationSeconds,
         file: this.recordingFile,
+        extension: 'mp3', // ? Custom extensions can be specified here
         localUrl: this.recordingLocalUrl,
       })
 
