@@ -74,6 +74,9 @@
           <CategoriesForm :on-updated="updateCategoriesData">
             <!-- Card actions - proceed to customization -->
             <div class="pt-8 d-flex">
+              <v-btn color="secondary" outlined @click="goToStep(1)"
+                >Back</v-btn
+              >
               <v-spacer></v-spacer>
               <v-btn
                 class="white--text"
@@ -91,12 +94,21 @@
         <v-stepper-content step="3">
           <CustomizationForm :on-updated="updateCustomization">
             <div class="pt-8 d-flex">
+              <v-btn
+                color="secondary"
+                outlined
+                :disabled="!btnCompleteOnboardingEnabled"
+                @click="goToStep(2)"
+              >
+                Back
+              </v-btn>
               <v-spacer></v-spacer>
               <v-btn
                 class="white--text"
                 color="teal"
                 depressed
-                @click="submitCustomizations"
+                :disabled="!btnCompleteOnboardingEnabled"
+                @click="completeOnboarding"
                 >Complete setup
               </v-btn>
             </div>
@@ -111,6 +123,13 @@
 import _ from 'lodash'
 import { mapState } from 'vuex'
 
+// Data
+import { defaultColor } from '@/data/colorSuggestions'
+
+// Api requests
+import { userApi } from '@/apiRequests'
+
+// Components
 import CategoriesForm from '@/components/forms/CategoriesForm.vue'
 import CustomizationForm from '@/components/forms/CustomizationForm.vue'
 import EmptyContainer from '@/components/EmptyContainer.vue'
@@ -120,12 +139,13 @@ export default {
   layout: 'onboarding',
   data() {
     return {
+      btnCompleteOnboardingEnabled: true, // Button is enabled by default
       fullName: '',
       categoriesData: [],
-      currentStep: 3,
+      currentStep: 3, // ? First step - "no 💩 Sherlock!""
       userUpdateData: {},
       customizationData: null,
-      cardBackgroundColor: '#FFF2CA',
+      cardBackgroundColor: defaultColor.backgroundColor, // Reference `data/colorSuggestions.js` to understand object strucutre
     }
   },
   computed: {
@@ -178,10 +198,35 @@ export default {
       this.goToStep(3)
     },
     submitCustomizations() {
-      // TODO: Add implementation
+      this.userUpdateData.customization = this.customizationData
     },
     completeOnboarding() {
-      // TODO: Update user
+      // Implicitly submit customizations since they are the last thing someone does
+      this.submitCustomizations()
+
+      this.btnCompleteOnboardingEnabled = false
+
+      // Update the user
+      userApi
+        .updateUser(this.userData.uid, this.userUpdateData)
+        .then(() => {
+          this.$toast.success(`That's it! Welcome onboard, ${this.fullName}`)
+
+          this.goTo('/journal/record')
+        })
+        .catch(() => {
+          this.$toast.error(
+            'Aww, shucks! Looks like we messed up. Please try again :(. Sorry.'
+          )
+
+          // Incase something went wrong, we re-enable the complete onboarding button so that they can try again
+          this.btnCompleteOnboardingEnabled = true
+        })
+
+      // Automatically re-enable the complete setup button after 3.5 seconds if it hasn't yet been re-enabled
+      setTimeout(() => {
+        this.btnCompleteOnboardingEnabled = true
+      }, 3500)
     },
   },
 }
