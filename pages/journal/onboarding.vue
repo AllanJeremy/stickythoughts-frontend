@@ -48,7 +48,14 @@
 
             <div class="d-flex flex-row justify-space-between">
               <v-btn color="secondary" outlined>Skip</v-btn>
-              <v-btn color="teal" depressed dark>Next </v-btn>
+              <v-btn
+                class="white--text"
+                color="teal"
+                depressed
+                :disabled="!fullName.length"
+                @click="goToStep(2)"
+                >Next
+              </v-btn>
             </div>
           </EmptyContainer>
         </v-stepper-content>
@@ -151,7 +158,11 @@
           <!-- Card actions - proceed to customization -->
           <div class="pt-8 d-flex">
             <v-spacer></v-spacer>
-            <v-btn color="teal" depressed dark :disabled="!categoriesComplete"
+            <v-btn
+              class="white--text"
+              color="teal"
+              depressed
+              :disabled="!categoriesComplete"
               >Next - Make it yours
             </v-btn>
           </div>
@@ -183,6 +194,7 @@ export default {
       ],
       currentStep: 1,
       MAX_CATEGORIES: 8,
+      userUpdateData: {},
     }
   },
   computed: {
@@ -220,6 +232,17 @@ export default {
     },
   },
   watch: {
+    fullName(name) {
+      const nameFormatted = name
+        .toLowerCase()
+        .replace(/\s/g, ' ')
+        .split(' ')
+        .map((str) => _.upperFirst(str))
+        .join(' ')
+        .trim()
+
+      this.fullName = nameFormatted
+    },
     categoryToAdd(value) {
       value = value || ''
       const valueFormatted = value.replace(/\s/g, ' ').toLowerCase()
@@ -235,6 +258,9 @@ export default {
     },
   },
   methods: {
+    goToStep(step) {
+      this.currentStep = step
+    },
     /** Get the number of columns a category should occupy based on its length */
     getCategoryCols(categoryText) {
       const cols = categoryText.length > 12 ? '12' : '6'
