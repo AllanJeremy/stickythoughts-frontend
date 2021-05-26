@@ -1,8 +1,9 @@
 <template>
   <v-card
     class="py-4"
-    color="rgb(255 242 202)"
-    min-height="85vh"
+    :color="cardBackgroundColor"
+    height="85vh"
+    max-height="35rem"
     width="90vw"
     max-width="25rem"
   >
@@ -15,14 +16,20 @@
           step="1"
           :complete="currentStep > 1"
         ></v-stepper-step>
+
         <v-divider></v-divider>
         <v-stepper-step
           color="secondary"
           step="2"
           :complete="currentStep > 2"
         ></v-stepper-step>
+
         <v-divider></v-divider>
-        <v-stepper-step step="3" :complete="currentStep > 3"></v-stepper-step>
+        <v-stepper-step
+          color="secondary"
+          step="3"
+          :complete="currentStep > 3"
+        ></v-stepper-step>
       </v-stepper-header>
 
       <!-- Steps -->
@@ -64,7 +71,7 @@
 
         <!-- Step 2 - Choose categories -->
         <v-stepper-content step="2">
-          <CategoriesForm :on-updated="updateCategoryData">
+          <CategoriesForm :on-updated="updateCategoriesData">
             <!-- Card actions - proceed to customization -->
             <div class="pt-8 d-flex">
               <v-spacer></v-spacer>
@@ -72,12 +79,28 @@
                 class="white--text"
                 color="teal"
                 depressed
-                :disabled="categoriesToSubmit.length < 2"
+                :disabled="categoriesData.length < 2"
                 @click="submitCategories"
                 >Next - Make it yours
               </v-btn>
             </div>
           </CategoriesForm>
+        </v-stepper-content>
+
+        <!-- Step 3 - Customize UI -->
+        <v-stepper-content step="3">
+          <CustomizationForm :on-updated="updateCustomization">
+            <div class="pt-8 d-flex">
+              <v-spacer></v-spacer>
+              <v-btn
+                class="white--text"
+                color="teal"
+                depressed
+                @click="submitCustomizations"
+                >Complete setup
+              </v-btn>
+            </div>
+          </CustomizationForm>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -89,17 +112,20 @@ import _ from 'lodash'
 import { mapState } from 'vuex'
 
 import CategoriesForm from '@/components/forms/CategoriesForm.vue'
+import CustomizationForm from '@/components/forms/CustomizationForm.vue'
 import EmptyContainer from '@/components/EmptyContainer.vue'
 
 export default {
-  components: { CategoriesForm, EmptyContainer },
+  components: { CategoriesForm, CustomizationForm, EmptyContainer },
   layout: 'onboarding',
   data() {
     return {
       fullName: '',
-      categoriesToSubmit: [],
-      currentStep: 1,
+      categoriesData: [],
+      currentStep: 3,
       userUpdateData: {},
+      customizationData: null,
+      cardBackgroundColor: '#FFF2CA',
     }
   },
   computed: {
@@ -130,9 +156,14 @@ export default {
     },
   },
   methods: {
-    updateCategoryData(categories) {
-      this.categoriesToSubmit = categories
+    updateCategoriesData(categories) {
+      this.categoriesData = categories
     },
+    updateCustomization(customization) {
+      this.cardBackgroundColor = customization.color.background
+      this.customizationData = customization
+    },
+
     goToStep(step) {
       this.currentStep = step
     },
@@ -143,7 +174,7 @@ export default {
       this.goToStep(2)
     },
     submitCategories() {
-      this.userUpdateData.categories = this.categoriesToSubmit
+      this.userUpdateData.categories = this.categoriesData
       this.goToStep(3)
     },
     submitCustomizations() {
