@@ -37,7 +37,7 @@
         <!-- Step 1 - Welcome & Name entry -->
         <v-stepper-content step="1">
           <EmptyContainer image-url="/celebrate-balloon.svg">
-            <h1>Sweet! You're in.</h1>
+            <h1 class="text-2x mb-1">Sweet! You're in.</h1>
             <p class="font-weight-light">Let us help you set things up.</p>
 
             <p class="mt-6 mb-2 text-left font-weight-bold secondary--text">
@@ -233,6 +233,10 @@ export default {
 </script>
 
 <style scoped>
+.text-2x {
+  font-size: 200%;
+}
+
 .v-stepper,
 .v-stepper__header {
   box-shadow: none !important;
