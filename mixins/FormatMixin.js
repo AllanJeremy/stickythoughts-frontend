@@ -21,5 +21,10 @@ export default {
 
       return formattedTime
     },
+    removeExtraSpaces(string) {
+      const formattedString = string.replace(/\s/g, ' ')
+
+      return formattedString
+    },
   },
 }
