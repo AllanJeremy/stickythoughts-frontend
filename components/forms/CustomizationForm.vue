@@ -39,7 +39,7 @@ export default {
   props: {
     onUpdate: {
       type: Function,
-      default: (customizations) => {},
+      default: (customization) => {},
     },
     title: {
       type: String,
@@ -106,8 +106,8 @@ export default {
     }
   },
   computed: {
-    customizationsToSubmit() {
-      const customizations = {
+    customizationToSubmit() {
+      const customization = {
         color: {
           background: this.selectedColor.backgroundColor,
           text: this.selectedColor.textColor || '#212121',
@@ -116,13 +116,13 @@ export default {
 
       // TODO: Consider adding pattern customization
 
-      return customizations
+      return customization
     },
   },
   watch: {
-    customizationsToSubmit(customizations) {
+    customizationToSubmit(customization) {
       // Pass this information to on updated
-      this.onUpdate(customizations)
+      this.onUpdate(customization)
     },
   },
   methods: {
