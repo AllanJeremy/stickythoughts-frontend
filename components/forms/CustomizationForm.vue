@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { defaultColor, colorSuggestions } from '@/data/colorSuggestions'
+
 export default {
   name: 'CustomizationForm',
   props: {
@@ -48,61 +50,8 @@ export default {
   },
   data() {
     return {
-      selectedColor: {
-        backgroundColor: '#FFF2CA',
-        textColor: '#212121',
-        dark: false,
-        isActive: true,
-      },
-      colorSuggestions: [
-        // Default - light yellow orange
-        {
-          backgroundColor: '#FFF2CA',
-          textColor: '#212121',
-          dark: false,
-          isActive: true,
-        },
-
-        // Light purple
-        {
-          backgroundColor: '#F3EAFF',
-          textColor: '#212121',
-          dark: false,
-          isActive: false,
-        },
-
-        // Light blue
-        {
-          backgroundColor: '#DAF8FF',
-          textColor: '#212121',
-          dark: false,
-          isActive: false,
-        },
-
-        // Light red
-        {
-          backgroundColor: '#FFC2C2',
-          textColor: '#212121',
-          dark: false,
-          isActive: false,
-        },
-
-        // Bluer blue - still light though
-        {
-          backgroundColor: '#B5C9FF',
-          textColor: '#212121',
-          dark: false,
-          isActive: false,
-        },
-
-        // Light brown
-        {
-          backgroundColor: '#E2C9C9',
-          textColor: '#212121',
-          dark: false,
-          isActive: false,
-        },
-      ],
+      selectedColor: defaultColor,
+      colorSuggestions,
     }
   },
   computed: {
