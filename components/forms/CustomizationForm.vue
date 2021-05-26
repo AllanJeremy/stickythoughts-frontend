@@ -37,7 +37,7 @@
 export default {
   name: 'CustomizationForm',
   props: {
-    onUpdate: {
+    onUpdated: {
       type: Function,
       default: (customization) => {},
     },
@@ -122,7 +122,7 @@ export default {
   watch: {
     customizationToSubmit(customization) {
       // Pass this information to on updated
-      this.onUpdate(customization)
+      this.onUpdated(customization)
     },
   },
   methods: {
