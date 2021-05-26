@@ -2,7 +2,7 @@
   <div>
     <h2 class="mb-2">{{ title }}</h2>
     <p v-if="categories.length < 2" class="font-weight-light">
-      Please ensure you have at least 2 categories
+      Add at least 2 categories to continue
     </p>
 
     <div class="mb-8 d-flex align-center">
