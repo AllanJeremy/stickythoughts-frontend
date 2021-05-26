@@ -105,6 +105,8 @@
 <script>
 import _ from 'lodash'
 
+import { categorySuggestions } from '@/data/categorySuggestions'
+
 export default {
   name: 'CategoriesForm',
   props: {
@@ -122,12 +124,7 @@ export default {
     return {
       categoryToAdd: '',
       categories: [],
-      categorySuggestions: [
-        { text: 'Ideas', isSuggestion: true, isActive: true },
-        { text: 'Business', isSuggestion: true, isActive: true },
-        { text: 'Gratitude', isSuggestion: true, isActive: true },
-        { text: 'Spirituality', isSuggestion: true, isActive: true },
-      ],
+      categorySuggestions,
       MAX_CATEGORIES: 8,
     }
   },
