@@ -1,5 +1,5 @@
 <template>
-  <v-app style="background-color: #ffefbb">
+  <v-app :style="`background-color: ${uiCustomization.color.background}`">
     <!-- App bar -->
     <v-app-bar color="transparent" flat max-height="56px">
       <v-app-bar-nav-icon
@@ -53,8 +53,9 @@
     <!-- Every app page will have an audio player attached to it in the background -->
     <AudioPlayer />
 
+    <Loading v-if="userLoading" />
     <!-- Actual content -->
-    <v-container class="px-8 py-4">
+    <v-container v-else class="px-8 py-4">
       <Nuxt />
     </v-container>
   </v-app>
@@ -62,10 +63,13 @@
 
 <script>
 import { mapState } from 'vuex'
+
+// Components
 import AudioPlayer from '@/components/audio/AudioPlayer.vue'
+import Loading from '@/components/Loading.vue'
 
 export default {
-  components: { AudioPlayer },
+  components: { AudioPlayer, Loading },
   data() {
     return {
       navIsOpen: false,
@@ -103,8 +107,13 @@ export default {
     }
   },
   computed: {
+    ...mapState('user', {
+      userLoading: 'isLoading',
+      uiCustomization: 'customization',
+    }),
     ...mapState('audio', ['trackOpenInBackground']),
   },
+
   mounted() {
     this.$nuxt.$on('playing', this.activateSomethingIsPlaying)
     this.$nuxt.$on('stoppedPlaying', this.deactivateSomethingIsPlaying)
