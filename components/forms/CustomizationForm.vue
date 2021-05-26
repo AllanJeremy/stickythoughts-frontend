@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h2 class="secondary--text">Make it yours</h2>
+    <h2 class="secondary--text">{{ title }}</h2>
     <p class="font-weight-light">
       Pick a color that best represents you
       <br />
@@ -43,7 +43,7 @@ export default {
     },
     title: {
       type: String,
-      default: 'Make StickyThoughts yours',
+      default: 'Make it yours',
     },
   },
   data() {
@@ -155,6 +155,7 @@ export default {
   padding: 6px;
   border-radius: 100% !important;
   border: 4px solid rgba(255, 255, 255, 0.35);
+  transition: border-width 0.25s;
 }
 
 .selectable-item {
