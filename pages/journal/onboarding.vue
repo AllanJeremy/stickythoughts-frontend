@@ -108,6 +108,7 @@
                 color="teal"
                 depressed
                 :disabled="!btnCompleteOnboardingEnabled"
+                :loading="btnCompleteOnboardingLoading"
                 @click="completeOnboarding"
                 >Complete setup
               </v-btn>
@@ -140,6 +141,7 @@ export default {
   data() {
     return {
       btnCompleteOnboardingEnabled: true, // Button is enabled by default
+      btnCompleteOnboardingLoading: false,
       fullName: '',
       categoriesData: [],
       currentStep: 3, // ? First step - "no 💩 Sherlock!""
@@ -204,6 +206,7 @@ export default {
       // Implicitly submit customizations since they are the last thing someone does
       this.submitCustomizations()
 
+      this.btnCompleteOnboardingLoading = true
       this.btnCompleteOnboardingEnabled = false
 
       // Update the user
@@ -222,9 +225,13 @@ export default {
           // Incase something went wrong, we re-enable the complete onboarding button so that they can try again
           this.btnCompleteOnboardingEnabled = true
         })
+        .finally(() => {
+          this.btnCompleteOnboardingLoading = false
+        })
 
       // Automatically re-enable the complete setup button after 3.5 seconds if it hasn't yet been re-enabled
       setTimeout(() => {
+        this.btnCompleteOnboardingLoading = false
         this.btnCompleteOnboardingEnabled = true
       }, 3500)
     },
