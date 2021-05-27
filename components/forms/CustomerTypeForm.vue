@@ -29,13 +29,9 @@
         label="💭 What did we miss?"
         solo
         hide-details
-        class="mt-6 mx-4"
+        class="mt-4 mx-4"
       ></v-text-field>
     </v-fade-transition>
-
-    <p class="secondary--text mt-6 text-center">
-      <small>Thanks! This helps us improve for you.</small>
-    </p>
 
     <slot></slot>
   </section>
