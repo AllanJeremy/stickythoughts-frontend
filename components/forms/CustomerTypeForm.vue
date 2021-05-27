@@ -99,6 +99,9 @@ export default {
     },
   },
   watch: {
+    otherCustomerTypeText(text) {
+      this.otherCustomerTypeText = _.upperFirst(text.toLowerCase())
+    },
     selectedCustomerTypeValues(customerTypeValues) {
       this.onUpdated(customerTypeValues)
     },
