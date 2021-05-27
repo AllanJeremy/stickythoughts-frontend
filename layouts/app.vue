@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { mapState } from 'vuex'
 
 // Components
@@ -109,11 +110,23 @@ export default {
   computed: {
     ...mapState('user', {
       userLoading: 'isLoading',
+      userData: 'data',
       uiCustomization: 'customization',
     }),
     ...mapState('audio', ['trackOpenInBackground']),
   },
+  watch: {
+    userData(user) {
+      // Do nothing if no user data was found from the database - using dateJoined to check if it is a db record
+      if (_.isEmpty(user.dateJoined)) return
 
+      //* Getting here means a user was found in the database
+      // Redirect new users to onboarding
+      if (user.isNew) {
+        this.goTo('/journal/onboarding')
+      }
+    },
+  },
   mounted() {
     this.$nuxt.$on('playing', this.activateSomethingIsPlaying)
     this.$nuxt.$on('stoppedPlaying', this.deactivateSomethingIsPlaying)
