@@ -1,5 +1,5 @@
 /** An object representing the default customer type */
-const defaultCustomerTypes = [{ text: 'Other', value: 'other' }]
+const defaultCustomerTypes = []
 
 /** An array of objects representing customer types */
 const customerTypeSuggestions = [
