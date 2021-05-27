@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
       <div id="onboarding-bg"></div>
-      {{ userData }}
+
       <Loading v-if="userLoading" />
 
       <!-- Actual content -->
