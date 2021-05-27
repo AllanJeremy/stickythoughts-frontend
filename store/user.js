@@ -6,7 +6,7 @@ export const state = () => ({
   data: {}, // User data
   customization: {
     color: {
-      background: defaultColor,
+      background: defaultColor.backgroundColor,
     },
   },
 })
@@ -22,7 +22,7 @@ export const mutations = {
       //* Getting here means that customization is at the very least an object
       state.customization.color.background = userData.customization.color
         ? userData.customization.color.background
-        : defaultColor
+        : defaultColor.backgroundColor
     }
   },
 
