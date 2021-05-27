@@ -169,12 +169,12 @@ export default {
       this.fullName = nameFormatted
     },
 
-    userData(data) {
+    userData(user) {
       // Do nothing if no user data was found from the database - using dateJoined to check if it is a db record
-      if (_.isEmpty(data.name)) return
+      if (_.isEmpty(user.dateJoined)) return
 
       //* Getting here means a user was found in the database
-      this.fullName = data.name
+      this.fullName = user.name
     },
   },
   methods: {
