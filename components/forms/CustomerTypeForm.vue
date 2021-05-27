@@ -4,14 +4,14 @@
     <p class="secondary--text font-weight-light">
       {{ subtitle }}
     </p>
-    <p class="font-weight-light mb-0">Which of these best describes you?</p>
+    <p class="font-weight-light mb-0">What best describes you?</p>
 
     <v-row no-gutters>
       <v-col
         v-for="(customerType, i) in customerTypeSuggestions"
         :key="`customer-type-${i}`"
         cols="6"
-        class="pb-0 pl-4"
+        :class="`pb-0 pl-${(i % 2) * 3}`"
       >
         <v-checkbox
           v-model="selectedCustomerTypes"
@@ -30,7 +30,7 @@
         label="💭 What did we miss?"
         solo
         hide-details
-        class="mt-4 mx-4"
+        class="mt-4"
       ></v-text-field>
     </v-fade-transition>
 
