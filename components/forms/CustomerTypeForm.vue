@@ -70,10 +70,9 @@ export default {
     }
   },
   computed: {
+    /** Filters out 'other' as a selection - instead opting to add the text value of the 'other' field */
     selectedCustomerTypeValues() {
-      let customerTypeValues = this.selectedCustomerTypes.map(
-        (customerType) => customerType.value
-      )
+      let customerTypeValues = this.selectedCustomerTypes
 
       // 'Other' is selected and text has been provided ~ add it to the list of potential customer descriptions
       if (
@@ -82,18 +81,19 @@ export default {
       ) {
         // Add the `other` value. We use 'other:' so that we can know which customer types are custom in the database
         const valueToAdd = `other: ${this.otherCustomerTypeText.toLowerCase()}`
+
         customerTypeValues = [...customerTypeValues, valueToAdd]
       }
 
       // Remove empty values from the existing customer type values ~ means we only get actual values
-      customerTypeValues = customerTypeValues.filter(
-        (value) => !_.isEmpty(value)
-      )
+      customerTypeValues = customerTypeValues.filter((value) => {
+        return !_.isEmpty(value) && value !== 'other'
+      })
 
       return customerTypeValues
     },
     customerTypeOtherSelected() {
-      const otherSelected = this.selectedCustomerTypeValues.includes('other')
+      const otherSelected = this.selectedCustomerTypes.includes('other')
 
       return otherSelected
     },
