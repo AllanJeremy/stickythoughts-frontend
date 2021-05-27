@@ -25,6 +25,7 @@
 
     <v-fade-transition>
       <v-text-field
+        v-model="otherCustomerTypeText"
         v-if="customerTypeOtherSelected"
         label="💭 What did we miss?"
         solo
@@ -38,6 +39,8 @@
 </template>
 
 <script>
+import _ from 'lodash'
+
 import {
   defaultCustomerTypes,
   customerTypeSuggestions,
@@ -57,17 +60,33 @@ export default {
   },
   data() {
     return {
-      selectedCustomerTypes: defaultCustomerTypes,
       customerTypeSuggestions,
+      otherCustomerTypeText: '',
+      selectedCustomerTypes: defaultCustomerTypes,
     }
   },
   computed: {
     selectedCustomerTypeValues() {
-      const values = this.selectedCustomerTypes.map(
+      let customerTypeValues = this.selectedCustomerTypes.map(
         (customerType) => customerType.value
       )
 
-      return values
+      // 'Other' is selected and text has been provided ~ add it to the list of potential customer descriptions
+      if (
+        customerTypeValues.includes('other') &&
+        !_.isEmpty(this.otherCustomerTypeText)
+      ) {
+        // Add the `other` value. We use 'other:' so that we can know which customer types are custom in the database
+        const valueToAdd = `other: ${this.otherCustomerTypeText.toLowerCase()}`
+        customerTypeValues = [...customerTypeValues, valueToAdd]
+      }
+
+      // Remove empty values from the existing customer type values ~ means we only get actual values
+      customerTypeValues = customerTypeValues.filter(
+        (value) => !_.isEmpty(value)
+      )
+
+      return customerTypeValues
     },
     customerTypeOtherSelected() {
       const otherSelected = this.selectedCustomerTypeValues.includes('other')
