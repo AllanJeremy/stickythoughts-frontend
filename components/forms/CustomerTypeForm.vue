@@ -2,7 +2,7 @@
   <section>
     <h1 class="secondary--text">{{ title }}</h1>
     <p class="secondary--text font-weight-light">
-      Let's get started setting up your account
+      {{ subtitle }}
     </p>
     <p class="font-weight-light mb-0">Which of these best describes you?</p>
 
@@ -25,8 +25,8 @@
 
     <v-fade-transition>
       <v-text-field
-        v-model="otherCustomerTypeText"
         v-if="customerTypeOtherSelected"
+        v-model="otherCustomerTypeText"
         label="💭 What did we miss?"
         solo
         hide-details
@@ -52,6 +52,10 @@ export default {
     title: {
       type: String,
       default: 'Glad to have you here!',
+    },
+    subtitle: {
+      type: String,
+      default: "Let's get you up and running 💨",
     },
     onUpdated: {
       type: Function,
