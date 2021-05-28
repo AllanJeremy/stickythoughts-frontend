@@ -131,7 +131,9 @@ export default {
                 .createJournal(this.userData, this.journalData)
                 .then(() => {
                   // Provide the user with feedback
-                  this.$toast.success('Journal entry upload successful')
+                  this.$toast.success(
+                    'Journal entry upload successful. You can view it under History'
+                  )
 
                   // Empty the description ~ it has been saved in the cloud
                   this.description = ''
