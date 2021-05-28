@@ -1,5 +1,14 @@
 <template>
   <v-app :style="`background-color: ${uiCustomization.color.background}`">
+    <v-fade-transition>
+      <v-progress-linear
+        v-if="somethingIsUploading"
+        indeterminate
+        color="rgb(237, 171, 84)"
+        max="100"
+      ></v-progress-linear>
+    </v-fade-transition>
+
     <!-- App bar -->
     <v-app-bar color="transparent" flat max-height="56px">
       <v-app-bar-nav-icon
@@ -8,6 +17,10 @@
 
       <v-spacer></v-spacer>
 
+      <!-- Upgrade account -->
+      <v-btn class="mr-2" color="secondary" depressed small>Upgrade</v-btn>
+
+      <!-- Track playing in the background indicator -->
       <v-btn
         v-if="trackOpenInBackground"
         icon
@@ -17,6 +30,40 @@
         <v-icon>mdi-play</v-icon>
       </v-btn>
 
+      <!-- Upload is happening in the background indicator -->
+      <v-menu v-if="somethingIsUploading" offset-y>
+        <template #activator="{ on, attrs }">
+          <v-btn class="pulsating" icon :attrs="attrs" v-on="on">
+            <v-icon>mdi-upload</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item class="px-0">
+            <v-list-item-title>
+              <!-- Only show the pause option if the upload is in progress -->
+              <v-btn
+                v-if="!uploadIsPaused"
+                class="py-6"
+                text
+                block
+                small
+                color="secondary"
+                >Pause</v-btn
+              >
+
+              <!-- Only show the resume option if the upload is paused -->
+              <v-btn v-else class="py-6" text block small color="secondary">
+                Resume
+              </v-btn>
+
+              <v-btn class="py-6" text block small color="error">Cancel</v-btn>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <!-- Share StickyThoughts -->
       <v-btn icon>
         <v-icon>mdi-share-variant</v-icon>
       </v-btn>
@@ -53,7 +100,7 @@
     <!-- Every app page will have an audio player attached to it in the background -->
     <AudioPlayer />
 
-    <Loading v-if="userLoading" />
+    <Loading v-if="!userFoundInDb" />
     <!-- Actual content -->
     <v-container v-else class="px-8 py-4">
       <Nuxt />
@@ -62,15 +109,18 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import { mapState } from 'vuex'
 
 // Components
 import AudioPlayer from '@/components/audio/AudioPlayer.vue'
 import Loading from '@/components/Loading.vue'
 
+// Mixins
+import { NavMixin } from '@/mixins'
+
 export default {
   components: { AudioPlayer, Loading },
+  mixins: [NavMixin],
   data() {
     return {
       navIsOpen: false,
@@ -104,7 +154,13 @@ export default {
         },
         { icon: 'mdi-logout-variant', title: 'Logout', link: '/auth/logout' },
       ],
+
+      // Audio related
       somethingIsPlaying: false,
+
+      // Upload related
+      somethingIsUploading: false,
+      uploadIsPaused: false,
     }
   },
   computed: {
@@ -114,24 +170,31 @@ export default {
       uiCustomization: 'customization',
     }),
     ...mapState('audio', ['trackOpenInBackground']),
+
+    /** @return `true` if the user was found in the database and `false` if the user was NOT found in the database */
+    userFoundInDb() {
+      // User was found in the db if we cab access their date joined (not available locally until fetched from db)
+      return !this.userLoading && this.userData.dateJoined
+    },
   },
   watch: {
-    userData(user) {
-      // Do nothing if no user data was found from the database - using dateJoined to check if it is a db record
-      if (_.isEmpty(user.dateJoined)) return
-
-      //* Getting here means a user was found in the database
-      // Redirect new users to onboarding
-      if (user.isNew) {
+    userFoundInDb(userWasFound) {
+      if (userWasFound && this.userData.isNew) {
+        // Redirect new users to onboarding
         this.goTo('/journal/onboarding')
       }
     },
   },
   mounted() {
+    // Statements in order of occurence, not alphabetical
+    this.$nuxt.$on('uploading', this.handleUploading)
+    this.$nuxt.$on('uploadComplete', this.handleUploadComplete)
+
     this.$nuxt.$on('playing', this.activateSomethingIsPlaying)
     this.$nuxt.$on('stoppedPlaying', this.deactivateSomethingIsPlaying)
   },
   methods: {
+    // Audio related
     activateSomethingIsPlaying() {
       this.somethingIsPlaying = true
     },
@@ -140,6 +203,17 @@ export default {
     },
     openAudioPlayer() {
       this.$nuxt.$emit('openPlayer')
+    },
+
+    // Upload related
+    handleUploading({ progressPercentage }) {
+      // Establish whether something is uploading or not
+      this.somethingIsUploading = progressPercentage !== 100
+    },
+
+    //
+    handleUploadComplete() {
+      this.somethingIsUploading = false
     },
   },
 }
