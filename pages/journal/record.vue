@@ -95,6 +95,7 @@ export default {
     currentUploadTask(uploadTask) {
       if (_.isEmpty(uploadTask)) return
 
+      //* HANDLING AUDIO RECORDING UPLOAD FUNCTIONALITY
       // Upload state changed
       uploadTask.on(
         'state_changed',
@@ -103,10 +104,7 @@ export default {
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
 
           // Data to broadcast to other pages/components
-          const uploadData = this.getUploadData(
-            this.uploadTask,
-            this.uploadProgress
-          )
+          const uploadData = this.getUploadData(uploadTask, this.uploadProgress)
 
           this.$nuxt.$emit('uploading', uploadData)
         },
