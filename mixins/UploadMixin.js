@@ -34,11 +34,25 @@ export default {
       return uploadTask
     },
 
-    /** Delete a file from storage
-     * @param {String} fileName The full filename (including path) that we want to delete
+    /** Pause an upload
+     * @param {Object} uploadTask The upload task to pause
      */
-    deleteFile(fileName) {
-      // TODO: Add implementation
+    pauseUpload(uploadTask) {
+      return uploadTask.pause()
+    },
+
+    /** Resume an upload
+     * @param {Object} uploadTask The upload task to resume
+     */
+    resumeUpload(uploadTask) {
+      return uploadTask.resume()
+    },
+
+    /** Cancel an upload
+     * @param {Object} uploadTask The upload task to cancel
+     */
+    cancelUpload(uploadTask) {
+      return uploadTask.cancel()
     },
   },
 }
