@@ -1,6 +1,10 @@
 <template>
-  <v-bottom-sheet v-model="playerIsOpen">
-    <v-card class="d-flex justify-space-around align-center" height="7.5rem">
+  <v-bottom-sheet v-model="playerIsOpen" hide-overlay>
+    <v-card
+      class="d-flex justify-space-around align-center"
+      height="7.5rem"
+      :color="color"
+    >
       <div class="mx-3">
         <v-btn
           v-show="!isPlaying"
@@ -56,11 +60,18 @@ import { AudioPlayerMixin, FormatMixin } from '@/mixins'
 
 export default {
   mixins: [AudioPlayerMixin, FormatMixin],
+  props: {
+    color: {
+      type: String,
+      default: '#FFF',
+    },
+  },
 }
 </script>
 
 <style scoped>
 .slider-container {
-  min-width: 15.75rem;
+  width: 100%;
+  max-width: 70vw;
 }
 </style>
