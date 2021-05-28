@@ -7,6 +7,20 @@ export default {
     }
   },
   methods: {
+    /** Get the object representing the current upload's data
+     * @param {Object} uploadTask The current upload task
+     * @param {Number} uploadProgressPercentage The current percentage of the upload. 0 is starting , 100 is finished
+     * @return {Object} An object containing the upload task and progress
+     */
+    getUploadData(uploadTask, uploadProgressPercentage) {
+      const uploadData = {
+        task: uploadTask,
+        progressPercentage: uploadProgressPercentage,
+      }
+
+      return uploadData
+    },
+
     /** Upload a file to storage
      * @param {Blob} file The file to be uploaded
      * @param {String} fileName The name of the file (including the extension) to be uploaded
