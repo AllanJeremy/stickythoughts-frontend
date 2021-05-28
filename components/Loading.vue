@@ -1,14 +1,20 @@
 <template>
   <div class="container-loading fill-height">
     <slot v-if="header">
-      <h2>DrunkenApe Affiliates</h2>
-      <p class="pb-4">Earn with DrunkenApe</p>
+      <h2>StickyThoughts</h2>
+      <p class="pb-4">Remember everything.</p>
     </slot>
+    <img
+      src="/logo-sticky-thoughts.svg"
+      alt="StickyThoughts logo"
+      width="256"
+    />
 
     <v-progress-circular
+      class="mt-4"
       size="40"
       indeterminate
-      color="green"
+      color="rgba(237, 171, 84, 0.9)"
     ></v-progress-circular>
   </div>
 </template>
