@@ -215,8 +215,6 @@ export default {
 
     // Upload related
     handleUploading({ task, progressPercentage }) {
-      console.log('[App layout] Current upload task: ', task)
-
       // Set the upload task on this vue file so that we can use it for pausing/resuming/cancelling
       this.currentUploadTask = task
 

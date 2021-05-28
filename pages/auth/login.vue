@@ -36,7 +36,6 @@ export default {
   },
   methods: {
     initializeFirebaseUi() {
-      console.log()
       // Initialize the FirebaseUI Widget using Firebase.
       const ui = new firebaseui.auth.AuthUI(auth)
 
@@ -50,9 +49,7 @@ export default {
         signInFlow: 'popup',
         signInSuccessUrl: '/journal/record',
         callbacks: {
-          signInSuccessWithAuthResult({ user }, redirectUrl) {
-            console.log('Redirect url:', redirectUrl)
-
+          signInSuccessWithAuthResult({ user }, _redirectUrl) {
             const newUserData = {
               uid: user.uid,
               name: user.displayName,
