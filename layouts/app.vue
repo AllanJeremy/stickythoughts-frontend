@@ -41,7 +41,7 @@
         <v-list>
           <v-list-item class="px-0">
             <v-list-item-title>
-              <!-- Only show the pause option if the upload is in progress -->
+              <!-- Pause upload - Only show if the upload is in progress -->
               <v-btn
                 v-if="!uploadIsPaused"
                 class="py-6"
@@ -49,15 +49,22 @@
                 block
                 small
                 color="secondary"
+                @click="handlePauseUpload"
                 >Pause</v-btn
               >
 
-              <!-- Only show the resume option if the upload is paused -->
-              <v-btn v-else class="py-6" text block small color="secondary">
+              <!-- Resume upload -  Only show if the upload is paused -->
+              <v-btn
+                v-else
+                class="py-6"
+                text
+                block
+                small
+                color="secondary"
+                @click="handleResumeUpload"
+              >
                 Resume
               </v-btn>
-
-              <v-btn class="py-6" text block small color="error">Cancel</v-btn>
             </v-list-item-title>
           </v-list-item>
         </v-list>
@@ -116,11 +123,11 @@ import AudioPlayer from '@/components/audio/AudioPlayer.vue'
 import Loading from '@/components/Loading.vue'
 
 // Mixins
-import { NavMixin } from '@/mixins'
+import { NavMixin, UploadMixin } from '@/mixins'
 
 export default {
   components: { AudioPlayer, Loading },
-  mixins: [NavMixin],
+  mixins: [NavMixin, UploadMixin],
   data() {
     return {
       navIsOpen: false,
@@ -161,6 +168,7 @@ export default {
       // Upload related
       somethingIsUploading: false,
       uploadIsPaused: false,
+      currentUploadTask: null,
     }
   },
   computed: {
@@ -206,9 +214,32 @@ export default {
     },
 
     // Upload related
-    handleUploading({ progressPercentage }) {
+    handleUploading({ task, progressPercentage }) {
+      console.log('[App layout] Current upload task: ', task)
+
+      // Set the upload task on this vue file so that we can use it for pausing/resuming/cancelling
+      this.currentUploadTask = task
+
       // Establish whether something is uploading or not
       this.somethingIsUploading = progressPercentage !== 100
+    },
+
+    //
+    handlePauseUpload() {
+      this.somethingIsUploading = false
+      this.uploadIsPaused = true
+
+      this.pauseUpload(this.currentUploadTask)
+
+      this.$toast.info('Upload paused')
+    },
+
+    //
+    handleResumeUpload() {
+      this.somethingIsUploading = true
+      this.uploadIsPaused = false
+
+      this.resumeUpload(this.currentUploadTask)
     },
 
     //
