@@ -7,25 +7,30 @@ import { journalsCollection } from '../../helpers/firebase'
  * @param {String} category A string representing the category to filter by. Defaults to 'all' meaning all categories
  */
 const getJournalEntries = async (uid, category = 'all') => {
-  let query = journalsCollection.where('uid', '==', uid)
-
-  // When they want to search through all categories
-  if (category === 'all') {
-    query = journalsCollection.where('category', '==', category)
-  }
-
   // Journal entries to return
   let journalEntries = []
 
   // Ensure errors are handled
   try {
-    const querySnapshot = await query.get()
+    let querySnapshot
 
-    journalEntries = querySnapshot.map((doc) => {
+    // Only filter by category if it's an actual category and not all categories
+    if (category !== 'all') {
+      querySnapshot = await journalsCollection
+        .where('uid', '==', uid)
+        .where('category', '==', category)
+        .get()
+    } else {
+      querySnapshot = await journalsCollection.where('uid', '==', uid).get()
+    }
+
+    querySnapshot.forEach((doc) => {
       const currentJournalEntry = doc.data()
 
-      // If the value ends up being false - it will be filtered out in the final results
-      return doc.exists ? currentJournalEntry : false
+      if (doc.exists) {
+        journalEntries.push(currentJournalEntry)
+        currentJournalEntry.id = doc.id
+      }
     })
   } catch (error) {
     // eslint-disable-next-line no-console
