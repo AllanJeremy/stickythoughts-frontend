@@ -3,8 +3,14 @@
     This file does not implement any logic of its own and simply serves the purpose of importing functions and exporting them out together so that they can be loaded from one file.
 */
 import createJournal from './createJournal'
+import getJournalEntries from './getJournalEntries'
 import updateJournal from './updateJournal'
 import deleteJournal from './deleteJournal'
 
 //* EXPORTS
-export default { createJournal, updateJournal, deleteJournal }
+export default {
+  createJournal,
+  getJournalEntries,
+  updateJournal,
+  deleteJournal,
+}
