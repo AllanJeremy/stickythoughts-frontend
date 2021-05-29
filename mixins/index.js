@@ -4,8 +4,9 @@
 */
 import AudioPlayerMixin from './AudioPlayerMixin'
 import FormatMixin from './FormatMixin'
+import JournalMixin from './JournalMixin'
 import NavMixin from './NavMixin'
 import UploadMixin from './UploadMixin'
 
 // * EXPORTS
-export { AudioPlayerMixin, FormatMixin, NavMixin, UploadMixin }
+export { AudioPlayerMixin, FormatMixin, JournalMixin, NavMixin, UploadMixin }
