@@ -163,8 +163,9 @@ export default {
 
       this.recordingLocalUrl = window.URL.createObjectURL(this.recordingFile)
 
+      //
       this.$nuxt.$emit('recordingComplete', {
-        duration: this.recordingDurationSeconds,
+        durationInSeconds: this.recordingDurationSeconds,
         file: this.recordingFile,
         extension: 'mp3', // ? Custom extensions can be specified here
         localUrl: this.recordingLocalUrl,

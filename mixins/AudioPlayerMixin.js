@@ -20,7 +20,7 @@ export default {
       return element
     },
     trackDuration() {
-      const duration = this.trackDetails.duration || 0
+      const duration = this.trackDetails.durationInSeconds || 0
 
       return duration
     },

@@ -37,8 +37,8 @@
         <v-slider
           v-model="currentSelectedTime"
           :value="currentTimeSeconds"
-          :max="trackDetails.duration"
-          :label="trackDetails.duration | formatTimer"
+          :max="trackDetails.durationInSeconds"
+          :label="trackDetails.durationInSeconds | formatTimer"
           inverse-label
           color="teal"
           track-color="grey"

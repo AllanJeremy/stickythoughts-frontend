@@ -156,7 +156,7 @@ export default {
       const metadata = {
         title: `Something in ${trackDetails.title}`,
         artist: this.userData.name,
-        duration: trackDetails.duration,
+        duration: trackDetails.durationInSeconds,
         album: `${this.userData.name} - ${this.selectedCategory}`,
         year: new Date().getFullYear(),
         comment: this.description,
@@ -199,7 +199,7 @@ export default {
     /** A getter that returns an object containing journal data to be added to the database in the appropriate format */
     getJournalData(trackDetails) {
       const journalData = {
-        duration: trackDetails.duration,
+        duration: trackDetails.durationInSeconds,
         size: trackDetails.file.size,
         description: this.description,
         category: this.selectedCategory,
