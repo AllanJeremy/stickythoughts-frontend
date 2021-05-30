@@ -58,7 +58,7 @@ export default {
 
             // User successfully signed in.
             return userApi.createUser(newUserData).then(() => {
-              this.goTo('/journal/record')
+              this.goTo('/journal/')
             })
           },
           uiShown() {
