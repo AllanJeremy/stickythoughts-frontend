@@ -16,6 +16,7 @@
     "@nuxtjs/toast": "^3.3.1",
     "axios": "^0.21.1",
     "core-js": "^3.9.1",
+    "dayjs": "^1.10.5",
     "firebase": "^8.6.2",
     "firebaseui": "^4.8.0",
     "lodash": "^4.17.21",
