@@ -100,6 +100,9 @@ export default {
 
     // Pause track
     this.$nuxt.$on('pauseTrack', () => this.pauseTrack)
+
+    // Stop playing track
+    this.$nuxt.$on('stopPlaying', this.stopPlaying)
   },
   methods: {
     ...mapActions('audio', ['updateTrackOpenInBackground']),
@@ -138,6 +141,8 @@ export default {
       this.audioElement.onended = (e) => {
         clearInterval(interval)
         this.isPlaying = false
+
+        this.$nuxt.$emit('playbackEnded')
       }
     },
     stopPlaying() {
@@ -148,10 +153,14 @@ export default {
       this.stopPlaying()
       this.playerIsOpen = false
     },
-    pauseTrack() {
+    pauseTrack(shouldClosePlayer = false) {
       this.isPlaying = false
 
       this.audioElement.pause()
+
+      if (shouldClosePlayer) {
+        this.playerIsOpen = false
+      }
     },
   },
 }
