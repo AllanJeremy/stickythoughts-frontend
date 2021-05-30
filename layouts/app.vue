@@ -76,7 +76,16 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="navIsOpen" class="nav" app>
+    <v-navigation-drawer
+      v-model="navIsOpen"
+      class="nav"
+      src="/minimalist-white-workspace.jpg"
+      app
+    >
+      <div
+        class="bg-full"
+        :style="`background: ${uiCustomization.color.background}; opacity:0.75;`"
+      ></div>
       <v-list-item class="d-flex">
         <v-list-item-content>
           <v-list-item-title class="title">Allan Jeremy</v-list-item-title>
