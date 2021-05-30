@@ -1,5 +1,5 @@
 <template>
-  <div style="max-width: 40rem">
+  <div>
     <v-tabs
       class="mb-8"
       color="teal"
@@ -7,11 +7,11 @@
       :background-color="uiCustomization.color.background"
       fixed-tabs
     >
-      <v-tab class="transparent">Record</v-tab>
-      <v-tab>History</v-tab>
+      <v-tab to="/journal/record">Record</v-tab>
+      <v-tab to="/journal/history">History</v-tab>
     </v-tabs>
 
-    <section>
+    <section style="max-width: 45rem; margin: auto">
       <div>
         <label class="font-weight-bold" for="recordCategory">Category</label>
         <v-select
@@ -34,9 +34,9 @@
           placeholder="Something to help you remember what you are talking about. You can leave this empty."
         ></v-textarea>
       </div>
-    </section>
 
-    <AudioRecorder />
+      <AudioRecorder />
+    </section>
   </div>
 </template>
 
