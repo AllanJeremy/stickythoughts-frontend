@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <div id="onboarding-bg" class="bg-full"></div>
+      <div id="onboarding-bg" class="bg-full bg-image"></div>
 
       <Loading v-if="!userFoundInDb" />
 
@@ -41,8 +41,6 @@ export default {
 <style scoped>
 #onboarding-bg {
   background-image: url('/empty-notepad-minimalist.jpg');
-  background-size: cover;
-  background-position: center;
   filter: blur(3px);
 }
 </style>
