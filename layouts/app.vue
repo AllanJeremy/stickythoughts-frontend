@@ -191,7 +191,7 @@ export default {
     /** @return `true` if the user was found in the database and `false` if the user was NOT found in the database */
     userFoundInDb() {
       // User was found in the db if we cab access their date joined (not available locally until fetched from db)
-      return !this.userLoading && this.userData.dateJoined
+      return !this.userLoading && this.userData.categories
     },
   },
   watch: {
