@@ -91,6 +91,7 @@
             :attrs="attrs"
             class="top"
             style="height: inherit"
+            plain
             v-on="on"
           >
             <v-icon>mdi-dots-vertical</v-icon>
