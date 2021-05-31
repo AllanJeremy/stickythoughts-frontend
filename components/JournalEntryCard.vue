@@ -1,35 +1,110 @@
 <template>
-  <v-card
-    :class="`d-flex my-2 px-2 py-2 journal-entry-card bg-image ${activeClass}`"
-  >
-    <div class="bg-full active-bg-overlay"></div>
-
-    <div
-      class="d-flex flex-column justify-center align-center"
-      style="z-index: 100"
+  <div>
+    <!-- Journal entry details  -->
+    <v-dialog
+      v-if="modalJournalEntryDetailsOpen"
+      v-model="modalJournalEntryDetailsOpen"
+      scrollable
+      max-width="25rem"
     >
-      <!-- Play button -->
-      <v-btn v-if="!isPlaying" icon @click="playJournalEntry">
-        <v-icon>mdi-play</v-icon>
-      </v-btn>
+      <v-card>
+        <v-card-title>Journal entry details</v-card-title>
 
-      <!-- Pause button -->
-      <v-btn v-if="isPlaying" icon @click="pauseJournalEntry">
-        <v-icon>mdi-pause</v-icon>
-      </v-btn>
+        <section class="mx-6">
+          <p class="font-weight-light">
+            This journal entry was recorded under
+            <strong class="font-weight-bold">{{
+              journalEntry.category
+            }}</strong>
+            on
+            <strong class="font-weight-bold">{{
+              journalEntry.dateAdded | formatFirebaseTimestamp
+            }}</strong>
+          </p>
 
-      <small class="pl-3">{{
-        journalEntry.durationInSeconds | formatTimer
-      }}</small>
-    </div>
+          <article v-if="journalEntry.description">
+            <small>Description</small>
+            <p class="font-weight-light">{{ journalEntry.description }}</p>
+          </article>
+        </section>
 
-    <!-- Entry details -->
-    <div class="ml-4" style="z-index: 100">
-      <h4 class="font-weight-light">
-        Something in {{ journalEntry.category }}
-      </h4>
-    </div>
-  </v-card>
+        <v-card-actions class="mt-4">
+          <v-btn depressed @click="modalJournalEntryDetailsOpen = false"
+            >Close
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn v-if="canPlay" outlined color="teal" @click="playJournalEntry"
+            >Play</v-btn
+          >
+          <v-btn
+            v-if="canPause"
+            outlined
+            color="error"
+            @click="pauseJournalEntry"
+            >Pause</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Journal entry card -->
+    <v-card
+      :class="`d-flex my-2 px-2 py-2 journal-entry-card bg-image ${activeClass}`"
+    >
+      <div class="bg-full active-bg-overlay"></div>
+
+      <div class="top d-flex flex-column justify-center align-center">
+        <!-- Play button -->
+        <v-btn v-if="canPlay" icon @click="playJournalEntry">
+          <v-icon>mdi-play</v-icon>
+        </v-btn>
+
+        <!-- Pause button -->
+        <v-btn v-if="canPause" icon @click="pauseJournalEntry">
+          <v-icon>mdi-pause</v-icon>
+        </v-btn>
+
+        <small class="pl-3">{{
+          journalEntry.durationInSeconds | formatTimer
+        }}</small>
+      </div>
+
+      <!-- Entry details -->
+      <div
+        class="ml-4 top cursor-pointer"
+        @click="modalJournalEntryDetailsOpen = true"
+      >
+        <h4 class="font-weight-light">
+          Something in {{ journalEntry.category }}
+        </h4>
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <v-menu class="top" offset-y>
+        <template #activator="{ on, attrs }">
+          <v-btn icon :attrs="attrs" class="top" v-on="on">
+            <v-icon>mdi-dots-horizontal</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item class="px-0">
+            <v-list-item-title
+              ><v-btn
+                class="py-4"
+                text
+                block
+                small
+                @click="modalJournalEntryDetailsOpen = true"
+                >View</v-btn
+              ></v-list-item-title
+            >
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -48,6 +123,7 @@ export default {
   data() {
     return {
       isPlaying: false,
+      modalJournalEntryDetailsOpen: false,
     }
   },
   computed: {
@@ -55,6 +131,12 @@ export default {
       const theClass = this.isPlaying ? 'active' : ''
 
       return theClass
+    },
+    canPlay() {
+      return !this.isPlaying || this.isPaused
+    },
+    canPause() {
+      return this.isPlaying && !this.isPaused
     },
   },
   created() {
@@ -74,6 +156,7 @@ export default {
       this.$nuxt.$emit('stopAllEntryPlays')
 
       this.isPlaying = true
+      this.isPaused = false
 
       this.trackDetails = this.getTrackDetails(this.journalEntry)
 
@@ -82,6 +165,7 @@ export default {
     },
     pauseJournalEntry() {
       this.isPlaying = false
+      this.isPaused = true
 
       this.$nuxt.$emit('pauseTrack')
     },
@@ -103,6 +187,10 @@ $transitionTime: 0.5s;
   background-image: url('/white-marble-background.jpg');
   transition: background-image $transitionTime;
 
+  .cursor-pointer:hover {
+    cursor: pointer;
+  }
+
   &.active {
     background-image: url('/earphones-closeup-music-background.jpg');
     z-index: 100;
@@ -119,5 +207,8 @@ $transitionTime: 0.5s;
       opacity: 0.7;
     }
   }
+}
+.top {
+  z-index: 100 !important;
 }
 </style>
