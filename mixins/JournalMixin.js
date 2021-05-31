@@ -1,7 +1,17 @@
 import _ from 'lodash'
 
+// API requests
+import { journalApi } from '@/apiRequests'
+
 //* EXPORTS
 export default {
+  data() {
+    return {
+      allJournalEntries: [],
+      filteredJournalEntries: [],
+      journalEntriesLoading: true,
+    }
+  },
   methods: {
     getTrackDetails(journalEntry) {
       const trackDetails = {
@@ -13,64 +23,87 @@ export default {
       return trackDetails
     },
 
+    loadJournalEntries(userUid) {
+      this.journalEntriesLoading = true
+
+      // Add the current journals to this page
+      // ? We'll do this once then search through them locally for efficiency
+      journalApi
+        .getJournalEntries(userUid)
+        .then((journalEntriesFound) => {
+          this.allJournalEntries = journalEntriesFound
+          this.filteredJournalEntries = journalEntriesFound
+        })
+        .finally(() => {
+          this.journalEntriesLoading = false
+        })
+    },
+
     /** Search through a pre-existing list of journal entries
      * @description Usually, this function will receive the journal entries to search through from the component/page calling it
-     * @param {Array<JournalEntry>} journalEntries An array of journal entries
      * @param {String} searchQuery The search query
      * @param {String} category A string representing the category to filter by. Defaults to 'all' meaning all categories
      * @return {Array<JournalEntry>} An array of journal entries found matching the given query
      */
-    searchJournalEntries(journalEntries, searchQuery = '', category = 'all') {
+    searchJournalEntries(searchQuery = '', category = 'all') {
+      const searchThroughAllCategories = category === 'all'
+
+      // TODO: Add option for filtering by date here
+      if (_.isEmpty(searchQuery) && searchThroughAllCategories) {
+        return this.allJournalEntries
+      }
+
       // Convert to lowercase to negate case sensitivity
       searchQuery = searchQuery.toLowerCase()
       category = category.toLowerCase()
 
-      const searchThroughAllCategories = category === 'all'
+      let filteredJournalEntries = this.allJournalEntries.map(
+        (currentJournalEntry) => {
+          // [Category search] When we are searching through all categories, the category field now becomes a search point
+          if (searchThroughAllCategories) {
+            const categoryContainsSearchQuery = currentJournalEntry.category
+              .toLowerCase()
+              .includes(category)
 
-      let filteredJournalEntries = journalEntries.map((currentJournalEntry) => {
-        // [Category search] When we are searching through all categories, the category field now becomes a search point
-        if (searchThroughAllCategories) {
-          const categoryContainsSearchQuery = currentJournalEntry.category.includes(
-            category
-          )
-
-          if (categoryContainsSearchQuery) {
-            // Add the current journal entry
-            return currentJournalEntry
+            if (categoryContainsSearchQuery) {
+              // Add the current journal entry
+              return currentJournalEntry
+            }
           }
-        }
-        // ? Using else if so that we don't add duplicates
-        // [Tag search] If there are tags, search through them first - this is faster than searching description
-        else if (
-          _.isArray(currentJournalEntry.tags) &&
-          !_.isEmpty(currentJournalEntry.tags)
-        ) {
-          // .toLowerCase makes this case insensitive
-          const tagsContainSearchQuery = currentJournalEntry.tags
-            .map((entry) => entry.toLowerCase())
-            .includes(searchQuery)
 
-          if (tagsContainSearchQuery) {
-            // Add the current journal entry
-            return currentJournalEntry
+          // ? Using else if so that we don't add duplicates
+          // [Tag search] If there are tags, search through them first - this is faster than searching description
+          if (
+            _.isArray(currentJournalEntry.tags) &&
+            !_.isEmpty(currentJournalEntry.tags)
+          ) {
+            // .toLowerCase makes this case insensitive
+            const tagsContainSearchQuery = currentJournalEntry.tags
+              .map((entry) => entry.toLowerCase())
+              .includes(searchQuery)
+
+            if (tagsContainSearchQuery) {
+              // Add the current journal entry
+              return currentJournalEntry
+            }
           }
-        }
-        // [Description search] Slowest to search through since it might be longer, only used as a last resort
-        else if (_.isString(currentJournalEntry.description)) {
-          // Check description for search query
-          const descriptionContainsSearchQuery = currentJournalEntry.description
-            .toLowerCase()
-            .includes(searchQuery)
+          // [Description search] Slowest to search through since it might be longer, only used as a last resort
+          if (_.isString(currentJournalEntry.description)) {
+            // Check description for search query
+            const descriptionContainsSearchQuery = currentJournalEntry.description
+              .toLowerCase()
+              .includes(searchQuery)
 
-          if (descriptionContainsSearchQuery) {
-            // Add the current journal entry
-            return currentJournalEntry
+            if (descriptionContainsSearchQuery) {
+              // Add the current journal entry
+              return currentJournalEntry
+            }
           }
-        }
 
-        // If nothing was found ~ return false - this will be filtered out
-        return false
-      })
+          // If nothing was found ~ return false - this will be filtered out
+          return false
+        }
+      )
 
       // Remove any empty entries
       filteredJournalEntries = _.compact(filteredJournalEntries)
