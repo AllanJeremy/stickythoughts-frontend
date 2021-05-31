@@ -18,7 +18,7 @@ export default {
   props: {
     imageUrl: {
       type: String,
-      default: '/no-data.svg', // Default svg we use for missing data
+      default: '/audio-player-woman.svg', // Default svg we use for missing data
     },
     opacity: {
       type: String,
