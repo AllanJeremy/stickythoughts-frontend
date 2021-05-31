@@ -71,20 +71,29 @@
 
       <!-- Entry details -->
       <div
-        class="ml-4 top cursor-pointer"
+        class="ml-4 top cursor-pointer d-flex flex-column justify-center"
         @click="modalJournalEntryDetailsOpen = true"
       >
         <h4 class="font-weight-light">
-          Something in {{ journalEntry.category }}
+          {{ journalEntry.category }}
         </h4>
+        <span class="secondary--text">
+          <small>{{ journalEntry.dateAdded | formatFirebaseTimestamp }}</small>
+        </span>
       </div>
 
       <v-spacer></v-spacer>
 
-      <v-menu class="top" offset-y>
+      <v-menu class="top d-flex flex-column justify-center" offset-y>
         <template #activator="{ on, attrs }">
-          <v-btn icon :attrs="attrs" class="top" v-on="on">
-            <v-icon>mdi-dots-horizontal</v-icon>
+          <v-btn
+            icon
+            :attrs="attrs"
+            class="top"
+            style="height: inherit"
+            v-on="on"
+          >
+            <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
 
