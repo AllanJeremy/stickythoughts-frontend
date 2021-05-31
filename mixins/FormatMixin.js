@@ -29,7 +29,7 @@ export default {
     },
     formatFirebaseTimestamp(firebaseTimestamp) {
       // Tue, 12/Dec/2021 at 10:30pm
-      const dateFormat = 'ddd D/MMM/YY hh:mma'
+      const dateFormat = 'ddd D/MMM/YYYY hh:mma'
       const formatted = dayjs(firebaseTimestamp.toDate()).format(dateFormat)
 
       return formatted
