@@ -32,7 +32,7 @@
       <div class="slider-container">
         <h3>{{ trackTitle }}</h3>
         <h5 class="font-weight-medium text--secondary">
-          {{ trackDate }}
+          {{ trackDate | formatDate }}
         </h5>
         <v-slider
           v-model="currentSelectedTime"

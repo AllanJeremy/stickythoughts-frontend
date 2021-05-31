@@ -16,6 +16,7 @@ export default {
     getTrackDetails(journalEntry) {
       const trackDetails = {
         title: `Something in ${journalEntry.category}`,
+        dateAdded: journalEntry.dateAdded,
         durationInSeconds: journalEntry.durationInSeconds,
         url: journalEntry.assetLink,
       }

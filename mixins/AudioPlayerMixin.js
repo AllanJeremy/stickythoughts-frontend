@@ -52,7 +52,9 @@ export default {
       return title
     },
     trackDate() {
-      const date = this.trackDetails.dateAdded || 'Tue, 12/Dec/2021 at 10:30pm'
+      const date = this.trackDetails.dateAdded
+        ? this.trackDetails.dateAdded.toDate()
+        : new Date()
 
       return date
     },
