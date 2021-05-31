@@ -19,10 +19,10 @@ const setLoggedInUserData = ({ store }) => {
         // Get the first user record found if the snapshot is not empty ~ aka. There is at least one user that matches that criteria
         if (usersSnapshot.exists) {
           userData = { ...userData, ...usersSnapshot.data() }
-
-          // Update user store
-          store.dispatch('user/updateUser', userData)
         }
+
+        // Update user store
+        store.dispatch('user/updateUser', userData)
       })
     }
 
