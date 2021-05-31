@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import dayjs from 'dayjs'
 
 export default {
   filters: {
@@ -25,6 +26,13 @@ export default {
       const formattedString = string.replace(/\s/g, ' ')
 
       return formattedString
+    },
+    formatFirebaseTimestamp(firebaseTimestamp) {
+      // Tue, 12/Dec/2021 at 10:30pm
+      const dateFormat = 'ddd D/MMM/YY hh:mma'
+      const formatted = dayjs(firebaseTimestamp.toDate()).format(dateFormat)
+
+      return formatted
     },
   },
 }
