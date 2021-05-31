@@ -24,11 +24,14 @@ export default {
     }),
   },
   watch: {
-    userData(user) {
+    userLoggedIn(isLoggedIn) {
       let redirectUrl
 
+      if (!isLoggedIn) {
+        redirectUrl = '/auth/login'
+      }
       // New user
-      if (_.isEmpty(user.dateJoined)) {
+      else if (_.isEmpty(this.userData.dateJoined)) {
         redirectUrl = '/journal/onboarding'
       }
       // Existing user
