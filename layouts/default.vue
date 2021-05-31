@@ -31,7 +31,9 @@
 <script>
 export default {
   data() {
-    return {}
+    return {
+      fixed: false,
+    }
   },
 }
 </script>
