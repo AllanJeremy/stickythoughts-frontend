@@ -37,36 +37,56 @@
     </v-row>
 
     <!-- Journal entries -->
-    <v-row>
-      <v-col
-        v-for="(journalEntry, i) in currentJournalEntries"
-        :key="`journal-${i}`"
-        cols="12"
-        sm="6"
-        md="4"
-        class="py-0"
+    <Loading v-if="journalEntriesLoading" />
+
+    <v-scroll-y-transition>
+      <EmptyContainer
+        v-if="!filteredJournalEntries.length && !journalEntriesLoading"
       >
-        <JournalEntryCard :journal-entry="journalEntry" />
-      </v-col>
-    </v-row>
+        <h2 class="secondary--text">Looks like there's nothing here</h2>
+        <p class="font-weight-light">
+          Once you
+          <nuxt-link class="secondary--text" to="/journal/record"
+            >record some stuff</nuxt-link
+          >
+          it will appear here.
+        </p>
+      </EmptyContainer>
+    </v-scroll-y-transition>
+
+    <v-scroll-y-transition>
+      <v-row v-if="filteredJournalEntries.length">
+        <v-col
+          v-for="(journalEntry, i) in filteredJournalEntries"
+          :key="`journal-${i}`"
+          cols="12"
+          sm="6"
+          md="4"
+          class="py-0"
+        >
+          <JournalEntryCard :journal-entry="journalEntry" />
+        </v-col>
+      </v-row>
+    </v-scroll-y-transition>
   </section>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 
-// API requests
-import { journalApi } from '@/apiRequests'
-
 // Mixins
 import { JournalMixin } from '@/mixins'
 
 // Components
+import EmptyContainer from '@/components/EmptyContainer.vue'
 import JournalEntryCard from '@/components/JournalEntryCard.vue'
+import Loading from '@/components/Loading.vue'
 
 export default {
   components: {
+    EmptyContainer,
     JournalEntryCard,
+    Loading,
   },
   mixins: [JournalMixin],
   layout: 'app',
@@ -75,8 +95,6 @@ export default {
       filterCategory: 'all',
       searchQuery: '',
       filterSearchQuery: '',
-      journalEntriesLoading: true,
-      currentJournalEntries: [],
     }
   },
   head() {
@@ -99,17 +117,16 @@ export default {
       return sortedCategories
     },
   },
+  watch: {
+    searchQuery(query) {
+      this.filteredJournalEntries = this.searchJournalEntries(
+        query,
+        this.filterCategory
+      )
+    },
+  },
   created() {
-    // Add the current journals to this page
-    // ? We'll do this once then search through them locally for efficiency
-    journalApi
-      .getJournalEntries(this.userData.uid)
-      .then((journalEntriesFound) => {
-        this.currentJournalEntries = journalEntriesFound
-      })
-      .finally(() => {
-        this.journalEntriesLoading = false
-      })
+    this.loadJournalEntries(this.userData.uid)
   },
   mounted() {
     // Pre-select the first category found if categories were found ~ which they usually will be (this is just some defensive programming)
@@ -120,8 +137,8 @@ export default {
   methods: {
     filterEntries() {
       // Since we have the entries locally, this does not need to be async
-      this.currentJournalEntries = this.searchJournalEntries(
-        this.currentJournalEntries,
+      this.allJournalEntries = this.searchJournalEntries(
+        this.allJournalEntries,
         this.searchQuery,
         this.filterCategory
       )
