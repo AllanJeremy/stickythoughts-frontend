@@ -14,9 +14,6 @@ const setLoggedInUserData = ({ store }) => {
         email: loggedInUser.email,
       }
 
-      // Update user data before trying to check for the currently logged in user in the database
-      store.dispatch('user/updateUser', userData)
-
       // Check for user updates
       usersCollection.doc(loggedInUser.uid).onSnapshot((usersSnapshot) => {
         // Get the first user record found if the snapshot is not empty ~ aka. There is at least one user that matches that criteria
