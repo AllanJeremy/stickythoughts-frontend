@@ -18,7 +18,7 @@
             }}</strong>
             on
             <strong class="font-weight-bold">{{
-              journalEntry.dateAdded | formatFirebaseTimestamp
+              journalEntry.dateAdded.toDate() | formatDate
             }}</strong>
           </p>
 
@@ -78,7 +78,7 @@
           {{ journalEntry.category }}
         </h4>
         <span class="secondary--text">
-          <small>{{ journalEntry.dateAdded | formatFirebaseTimestamp }}</small>
+          <small>{{ journalEntry.dateAdded.toDate() | formatDate }}</small>
         </span>
       </div>
 
