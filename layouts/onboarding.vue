@@ -3,7 +3,7 @@
     <v-main>
       <div id="onboarding-bg" class="bg-full bg-image"></div>
 
-      <Loading v-if="!isLoading" />
+      <Loading v-if="userLoading" />
 
       <!-- Actual content -->
       <v-container v-else class="fill-height d-flex flex-column justify-center">

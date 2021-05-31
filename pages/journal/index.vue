@@ -25,13 +25,17 @@ export default {
   },
   watch: {
     userData(user) {
-      // Do nothing if no user data was found from the database - using dateJoined to check if it is a db record
-      if (_.isEmpty(user.dateJoined)) return
+      let redirectUrl
 
-      //* Getting here means user data was found
-      const { isNew } = user
+      // New user
+      if (_.isEmpty(user.dateJoined)) {
+        redirectUrl = '/journal/onboarding'
+      }
+      // Existing user
+      else {
+        redirectUrl = '/journal/record'
+      }
 
-      const redirectUrl = isNew ? '/journal/onboarding' : '/journal/record'
       this.goTo(redirectUrl)
     },
   },
