@@ -47,7 +47,7 @@ export default {
           firebase.auth.EmailAuthProvider.PROVIDER_ID,
         ],
         signInFlow: 'popup',
-        signInSuccessUrl: '/journal/record',
+        signInSuccessUrl: '/journal/',
         callbacks: {
           signInSuccessWithAuthResult({ user }, _redirectUrl) {
             const newUserData = {
