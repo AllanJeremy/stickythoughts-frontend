@@ -68,7 +68,10 @@
           md="4"
           class="py-0"
         >
-          <JournalEntryCard :journal-entry="journalEntry" />
+          <JournalEntryCard
+            :journal-entry="journalEntry"
+            :categories="userData.categories"
+          />
         </v-col>
       </v-row>
     </v-scroll-y-transition>

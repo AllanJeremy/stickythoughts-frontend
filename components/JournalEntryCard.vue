@@ -1,6 +1,100 @@
 <template>
   <div>
-    <!-- Journal entry details  -->
+    <!-- [Modal] Update journal entry-->
+    <v-dialog
+      v-if="modalEditJournalEntryOpen"
+      v-model="modalEditJournalEntryOpen"
+      scrollable
+      max-width="25rem"
+    >
+      <v-card>
+        <v-card-title>Update journal entry</v-card-title>
+
+        <section class="mx-6">
+          <p class="font-weight-light">
+            You are about to update a journal entry that was recorded on
+            {{ journalEntry.dateAdded.toDate() | formatDate }}.
+          </p>
+
+          <div>
+            <span class="d-block secondary--text pb-2">
+              <small>Category</small>
+            </span>
+            <v-select
+              v-model="categorySelected"
+              :items="categories"
+              solo
+              item-color="teal"
+              label="Category"
+            ></v-select>
+          </div>
+
+          <div>
+            <span class="d-block secondary--text pb-2">
+              <small>Description</small>
+            </span>
+            <v-textarea
+              v-model="description"
+              solo
+              placeholder="Something to help you remember what you are talking about. You can leave this empty."
+            ></v-textarea>
+          </div>
+        </section>
+
+        <v-card-actions class="mt-4">
+          <v-btn depressed @click="modalEditJournalEntryOpen = false"
+            >Close
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="white--text"
+            depressed
+            color="teal"
+            :persistent="btnUpdateJournalEntryLoading"
+            :loading="btnUpdateJournalEntryLoading"
+            :disabled="!canUpdateJournalEntry || btnUpdateJournalEntryLoading"
+            @click="updateJournalEntry"
+            >Update entry</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- [Modal] Delete journal entry -->
+    <v-dialog
+      v-if="modalDeleteJournalEntryOpen"
+      v-model="modalDeleteJournalEntryOpen"
+      max-width="25rem"
+    >
+      <v-card
+        ><v-card-title>Delete journal entry</v-card-title>
+
+        <p class="font-weight-light mx-6">
+          You are about to delete a journal entry in
+          <strong class="font-weight-bold secondary--text">
+            "{{ journalEntry.category }}"
+          </strong>
+          that was recorded on:
+          {{ journalEntry.dateAdded.toDate() | formatDate }}
+        </p>
+        <v-card-text>
+          Are you sure you want to delete this journal entry?
+          <span class="error--text">This action is irreversible.</span>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn depressed @click="modalDeleteJournalEntryOpen = false"
+            >Cancel</v-btn
+          >
+          <v-spacer></v-spacer>
+          <v-btn depressed color="error" @click="deleteJournalEntry"
+            >Confirm Delete</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- [Modal] Journal entry details  -->
     <v-dialog
       v-if="modalJournalEntryDetailsOpen"
       v-model="modalJournalEntryDetailsOpen"
@@ -102,12 +196,37 @@
           <v-list-item class="px-0">
             <v-list-item-title
               ><v-btn
-                class="py-4"
+                class="py-6"
                 text
                 block
                 small
                 @click="modalJournalEntryDetailsOpen = true"
                 >View</v-btn
+              ></v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item class="px-0">
+            <v-list-item-title
+              ><v-btn
+                class="py-6"
+                text
+                block
+                small
+                @click="modalEditJournalEntryOpen = true"
+                >Edit</v-btn
+              ></v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item class="px-0">
+            <v-list-item-title
+              ><v-btn
+                class="py-6"
+                text
+                block
+                small
+                color="error"
+                @click="modalDeleteJournalEntryOpen = true"
+                >Delete</v-btn
               ></v-list-item-title
             >
           </v-list-item>
@@ -119,6 +238,15 @@
 
 <script>
 //* Smart component
+import _ from 'lodash'
+
+// Data
+import { defaultErrorMessage } from '@/data/messages/feedback'
+
+// API requests
+import { journalApi } from '@/apiRequests'
+
+// Mixins
 import { FormatMixin, JournalMixin } from '@/mixins'
 
 export default {
@@ -129,11 +257,24 @@ export default {
       type: Object,
       required: true,
     },
+    categories: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
       isPlaying: false,
       modalJournalEntryDetailsOpen: false,
+
+      modalEditJournalEntryOpen: false,
+      btnUpdateJournalEntryLoading: false,
+
+      modalDeleteJournalEntryOpen: false,
+      btnDeleteJournalEntryLoading: false,
+
+      categorySelected: this.journalEntry.category,
+      description: this.journalEntry.description,
     }
   },
   computed: {
@@ -147,6 +288,16 @@ export default {
     },
     canPause() {
       return this.isPlaying && !this.isPaused
+    },
+    canUpdateJournalEntry() {
+      const { category, description } = this.journalEntry
+
+      const categoryHasChanged = this.categorySelected !== category
+      const descriptionHasChanged =
+        this.description !== description && !_.isEmpty(this.description)
+
+      // A journal entry is considered updateable if it has been modified
+      return categoryHasChanged || descriptionHasChanged
     },
   },
   created() {
@@ -178,6 +329,40 @@ export default {
       this.isPaused = true
 
       this.$nuxt.$emit('pauseTrack')
+    },
+
+    deleteJournalEntry() {
+      // TODO: Add implementation
+      console.log('Deleting journal entry')
+    },
+
+    updateJournalEntry() {
+      const updateData = {}
+
+      // Intelligent update - only update category if it was updated
+      if (this.categorySelected !== this.journalEntry.category) {
+        updateData.category = this.categorySelected
+      }
+
+      // Intelligent update - only update description if it was updated
+      if (this.description !== this.journalEntry.description) {
+        updateData.description = this.description
+      }
+
+      this.btnUpdateJournalEntryLoading = true
+
+      // TODO: Test this
+      journalApi
+        .updateJournal(this.journalEntry.id, updateData)
+        .then(() => {
+          this.$toast.success('Successfully updated journal')
+        })
+        .catch(() => {
+          this.$toast.error(defaultErrorMessage)
+        })
+        .finally(() => {
+          this.btnUpdateJournalEntryLoading = false
+        })
     },
   },
 }
