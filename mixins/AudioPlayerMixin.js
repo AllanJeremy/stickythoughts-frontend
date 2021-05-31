@@ -99,7 +99,7 @@ export default {
     })
 
     // Pause track
-    this.$nuxt.$on('pauseTrack', () => this.pauseTrack)
+    this.$nuxt.$on('pauseTrack', this.pauseTrack)
 
     // Stop playing track
     this.$nuxt.$on('stopPlaying', this.stopPlaying)
