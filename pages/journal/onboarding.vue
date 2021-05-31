@@ -110,7 +110,7 @@
                 depressed
                 :disabled="categoriesData.length < 2"
                 @click="submitCategories"
-                >Next - Make it yours
+                >Make it yours
               </v-btn>
             </div>
           </CategoriesForm>
