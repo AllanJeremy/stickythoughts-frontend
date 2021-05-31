@@ -37,7 +37,11 @@
     </v-row>
 
     <!-- Journal entries -->
-    <Loading v-if="journalEntriesLoading" />
+    <v-progress-linear
+      v-if="journalEntriesLoading"
+      :indeterminate="true"
+      color="secondary"
+    ></v-progress-linear>
 
     <v-scroll-y-transition>
       <EmptyContainer
@@ -80,13 +84,11 @@ import { JournalMixin } from '@/mixins'
 // Components
 import EmptyContainer from '@/components/EmptyContainer.vue'
 import JournalEntryCard from '@/components/JournalEntryCard.vue'
-import Loading from '@/components/Loading.vue'
 
 export default {
   components: {
     EmptyContainer,
     JournalEntryCard,
-    Loading,
   },
   mixins: [JournalMixin],
   layout: 'app',
