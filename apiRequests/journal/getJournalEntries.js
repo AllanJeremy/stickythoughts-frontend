@@ -19,9 +19,13 @@ const getJournalEntries = async (uid, category = 'all') => {
       querySnapshot = await journalsCollection
         .where('uid', '==', uid)
         .where('category', '==', category)
+        .orderBy('dateAdded', 'desc')
         .get()
     } else {
-      querySnapshot = await journalsCollection.where('uid', '==', uid).get()
+      querySnapshot = await journalsCollection
+        .where('uid', '==', uid)
+        .orderBy('dateAdded', 'desc')
+        .get()
     }
 
     querySnapshot.forEach((doc) => {
