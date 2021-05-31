@@ -224,11 +224,13 @@ export default {
     },
 
     userData(user) {
-      // Do nothing if no user data was found from the database - using dateJoined to check if it is a db record
-      if (_.isEmpty(user.dateJoined)) return
-
       //* Getting here means a user was found in the database
       this.fullName = user.name
+
+      // Redirect user to record page if they are logged in and not new
+      if (!_.isEmpty(user.dateJoined) && !user.isNew) {
+        this.goTo('/journal/record')
+      }
     },
   },
   methods: {
