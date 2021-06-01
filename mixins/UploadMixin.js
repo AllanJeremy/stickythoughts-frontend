@@ -34,6 +34,16 @@ export default {
       return uploadTask
     },
 
+    /** Delete a file from storage
+     * @param {String} fileUrl The url to the file we want to delete
+     * @return {Promise} A promise that resolves to the file deletion status
+     */
+    deleteFileFromURL(fileUrl) {
+      const storageRef = storage.refFromURL(fileUrl)
+
+      return storageRef.delete()
+    },
+
     /** Pause an upload
      * @param {Object} uploadTask The upload task to pause
      */
