@@ -92,7 +92,7 @@
             depressed
             color="error"
             :loading="btnDeleteJournalEntryLoading"
-            :disabled="!canUpdateJournalEntry || btnDeleteJournalEntryLoading"
+            :disabled="btnDeleteJournalEntryLoading"
             @click="deleteJournalEntry"
             >Confirm Delete</v-btn
           >
@@ -340,13 +340,18 @@ export default {
     deleteJournalEntry() {
       this.btnDeleteJournalEntryLoading = true
 
+      // [API request] Delete journal
       journalApi
         .deleteJournal(this.journalEntry.id)
-        .then((response) => {
+        .then(() => {
+          // Close the delete journal modal
+          this.modalDeleteJournalEntryOpen = false
+
           this.$toast.success('Successfully deleted journal entry')
 
-          // TODO: Delete file associated with this journal entry
+          //* Delete file associated with this journal entry
           // User doesn't need to wait for this, it will happen in the background
+          this.deleteFileFromURL(this.journalEntry.assetLink)
         })
         .catch(() => {
           this.$toast.error(defaultErrorMessage)
@@ -371,7 +376,7 @@ export default {
 
       this.btnUpdateJournalEntryLoading = true
 
-      // TODO: Test this
+      // [API request] Update the journal
       journalApi
         .updateJournal(this.journalEntry.id, updateData)
         .then(() => {
