@@ -5,6 +5,7 @@
       v-if="modalEditJournalEntryOpen"
       v-model="modalEditJournalEntryOpen"
       scrollable
+      :persistent="btnUpdateJournalEntryLoading"
       max-width="25rem"
     >
       <v-card>
@@ -50,7 +51,6 @@
             class="white--text"
             depressed
             color="teal"
-            :persistent="btnUpdateJournalEntryLoading"
             :loading="btnUpdateJournalEntryLoading"
             :disabled="!canUpdateJournalEntry || btnUpdateJournalEntryLoading"
             @click="updateJournalEntry"
@@ -65,6 +65,7 @@
       v-if="modalDeleteJournalEntryOpen"
       v-model="modalDeleteJournalEntryOpen"
       max-width="25rem"
+      :persistent="btnDeleteJournalEntryLoading"
     >
       <v-card
         ><v-card-title>Delete journal entry</v-card-title>
@@ -87,7 +88,12 @@
             >Cancel</v-btn
           >
           <v-spacer></v-spacer>
-          <v-btn depressed color="error" @click="deleteJournalEntry"
+          <v-btn
+            depressed
+            color="error"
+            :loading="btnDeleteJournalEntryLoading"
+            :disabled="!canUpdateJournalEntry || btnDeleteJournalEntryLoading"
+            @click="deleteJournalEntry"
             >Confirm Delete</v-btn
           >
         </v-card-actions>
@@ -247,11 +253,11 @@ import { defaultErrorMessage } from '@/data/messages/feedback'
 import { journalApi } from '@/apiRequests'
 
 // Mixins
-import { FormatMixin, JournalMixin } from '@/mixins'
+import { FormatMixin, JournalMixin, UploadMixin } from '@/mixins'
 
 export default {
   name: 'JournalEntryCard',
-  mixins: [FormatMixin, JournalMixin],
+  mixins: [FormatMixin, JournalMixin, UploadMixin],
   props: {
     journalEntry: {
       type: Object,
@@ -332,8 +338,22 @@ export default {
     },
 
     deleteJournalEntry() {
-      // TODO: Add implementation
-      console.log('Deleting journal entry')
+      this.btnDeleteJournalEntryLoading = true
+
+      journalApi
+        .deleteJournal(this.journalEntry.id)
+        .then((response) => {
+          this.$toast.success('Successfully deleted journal entry')
+
+          // TODO: Delete file associated with this journal entry
+          // User doesn't need to wait for this, it will happen in the background
+        })
+        .catch(() => {
+          this.$toast.error(defaultErrorMessage)
+        })
+        .finally(() => {
+          this.btnDeleteJournalEntryLoading = false
+        })
     },
 
     updateJournalEntry() {
