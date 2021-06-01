@@ -49,6 +49,14 @@ export default {
       type: String,
       default: 'Make it yours',
     },
+    shouldPrepopulate: {
+      type: Boolean,
+      default: false,
+    },
+    userCustomization: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -75,6 +83,16 @@ export default {
       // Pass this information to on updated
       this.onUpdated(customization)
     },
+  },
+  created() {
+    if (this.shouldPrepopulate) {
+      const colorObj = {
+        backgroundColor: this.userCustomization.color.background,
+      }
+
+      this.selectColor(colorObj)
+      // This is where we'd customize the patterns/background images if we so decided to add them
+    }
   },
   methods: {
     selectColor(colorToSelect) {
