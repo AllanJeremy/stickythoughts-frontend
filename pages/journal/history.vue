@@ -1,16 +1,76 @@
 <template>
   <section>
+    <!-- Tabs -->
     <v-tabs
       class="mb-4"
       color="teal"
       slider-color="teal"
       :background-color="uiCustomization.color.background"
       fixed-tabs
-      value=""
     >
       <v-tab to="/journal/record">Record</v-tab>
       <v-tab to="/journal/history">History</v-tab>
     </v-tabs>
+
+    <!-- [Modal] Filter journal entries -->
+    <v-dialog
+      v-if="modalFilterJournalEntriesOpen"
+      v-model="modalFilterJournalEntriesOpen"
+      scrollable
+      max-width="25rem"
+    >
+      <v-card :color="uiCustomization.color.background">
+        <v-card-title>Filter journal entries</v-card-title>
+
+        <section class="mx-6">
+          <div class="mb-4">
+            <span class="d-block secondary--text pb-2">
+              <small>Search term</small>
+            </span>
+            <v-text-field
+              v-model="filterSearchQuery"
+              type="search"
+              placeholder="What do you hope to find?"
+              solo
+              hide-details
+              class="py-0"
+            >
+            </v-text-field>
+          </div>
+
+          <div>
+            <span class="d-block secondary--text">
+              <small>Category</small>
+            </span>
+            <v-select
+              v-model="filterCategory"
+              :items="categories"
+              solo
+              item-color="teal"
+              label="Category"
+            ></v-select>
+          </div>
+
+          <div>
+            <v-alert type="info" text> Date filters coming soon! </v-alert>
+          </div>
+        </section>
+
+        <v-card-actions class="mt-4">
+          <v-btn depressed @click="modalFilterJournalEntriesOpen = false"
+            >Close
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="white--text"
+            depressed
+            color="teal"
+            @click="filterEntries"
+            >Filter results</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <!-- Search and filter -->
     <v-row class="align-center mb-8" no-gutters>
@@ -30,7 +90,7 @@
         </div>
       </v-col>
       <v-col cols="2" sm="1" class="py-0 d-flex justify-end">
-        <v-btn text icon large>
+        <v-btn text icon large @click="modalFilterJournalEntriesOpen = true">
           <v-icon>mdi-filter-variant</v-icon>
         </v-btn>
       </v-col>
@@ -97,9 +157,11 @@ export default {
   layout: 'app',
   data() {
     return {
-      filterCategory: 'all',
+      filterCategory: 'All',
       searchQuery: '',
       filterSearchQuery: '',
+      modalFilterJournalEntriesOpen: false,
+      categories: [],
     }
   },
   head() {
@@ -124,6 +186,10 @@ export default {
   },
   watch: {
     searchQuery(query) {
+      // Update the filter search query to be the same
+      this.filterSearchQuery = query
+
+      // Perform search
       this.filteredJournalEntries = this.searchJournalEntries(
         query,
         this.filterCategory
@@ -132,20 +198,24 @@ export default {
   },
   created() {
     this.loadJournalEntries(this.userData.uid)
-  },
-  mounted() {
-    // Pre-select the first category found if categories were found ~ which they usually will be (this is just some defensive programming)
-    if (this.userCategoriesSorted.length) {
-      this.selectedCategory = this.userCategoriesSorted[0]
-    }
+
+    this.categories = ['All', ...this.userCategoriesSorted]
   },
   methods: {
     filterEntries() {
       // Since we have the entries locally, this does not need to be async
-      this.allJournalEntries = this.searchJournalEntries(
-        this.allJournalEntries,
-        this.searchQuery,
+      this.filteredJournalEntries = this.searchJournalEntries(
+        this.filterSearchQuery,
         this.filterCategory
+      )
+
+      this.modalFilterJournalEntriesOpen = false
+
+      const noun =
+        this.filteredJournalEntries.length === 1 ? 'entry' : 'entries'
+
+      this.$toast.info(
+        `${this.filteredJournalEntries.length} journal ${noun} found`
       )
     },
   },
