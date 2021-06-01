@@ -14,6 +14,8 @@
           :key="`color-${i}`"
           class="d-flex justify-center align-center"
           cols="4"
+          sm="3"
+          md="2"
         >
           <div :class="color.isActive ? 'ring' : ''">
             <v-card
@@ -21,7 +23,7 @@
               :color="color.backgroundColor"
               height="60"
               width="60"
-              @click="selectColor(i)"
+              @click="selectColor(color)"
             >
             </v-card>
           </div>
@@ -75,15 +77,15 @@ export default {
     },
   },
   methods: {
-    selectColor(colorSuggestionIndex) {
-      this.colorSuggestions = this.colorSuggestions.map((color, index) => {
+    selectColor(colorToSelect) {
+      this.colorSuggestions = this.colorSuggestions.map((color) => {
         // Make the currently selected color active
-        color.isActive = index === colorSuggestionIndex
+        color.isActive = colorToSelect.backgroundColor === color.backgroundColor
 
         return color
       })
 
-      this.selectedColor = this.colorSuggestions[colorSuggestionIndex]
+      this.selectedColor = colorToSelect
     },
   },
 }
