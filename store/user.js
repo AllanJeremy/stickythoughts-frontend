@@ -40,4 +40,9 @@ export const actions = {
   updateLoggedInStatus(context, isLoggedIn) {
     context.commit('mutateLoggedInStatus', isLoggedIn)
   },
+  updateUserCustomization(context, newCustomization) {
+    const userData = { customization: newCustomization }
+
+    context.commit('mutateUserData', userData)
+  },
 }
