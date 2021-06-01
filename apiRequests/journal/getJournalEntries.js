@@ -12,22 +12,16 @@ const getJournalEntries = async (uid, category = 'all') => {
 
   // Ensure errors are handled
   try {
-    let querySnapshot
+    let query = journalsCollection.where('uid', '==', uid)
 
     // Only filter by category if it's an actual category and not all categories
     if (category !== 'all') {
-      querySnapshot = await journalsCollection
-        .where('uid', '==', uid)
-        .where('category', '==', category)
-        .orderBy('dateAdded', 'desc')
-        .get()
-    } else {
-      querySnapshot = await journalsCollection
-        .where('uid', '==', uid)
-        .orderBy('dateAdded', 'desc')
-        .get()
+      query = query.where('category', '==', category)
     }
 
+    const querySnapshot = await query.orderBy('dateAdded', 'desc').get()
+
+    // Get the data
     querySnapshot.forEach((doc) => {
       const currentJournalEntry = doc.data()
 
