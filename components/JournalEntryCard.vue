@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!isDeleted">
     <!-- [Modal] Update journal entry-->
     <v-dialog
       v-if="modalEditJournalEntryOpen"
@@ -270,6 +270,7 @@ export default {
   },
   data() {
     return {
+      isDeleted: false,
       isPlaying: false,
       modalJournalEntryDetailsOpen: false,
 
@@ -344,10 +345,15 @@ export default {
       journalApi
         .deleteJournal(this.journalEntry.id)
         .then(() => {
+          this.isDeleted = true
+
           // Close the delete journal modal
           this.modalDeleteJournalEntryOpen = false
 
           this.$toast.success('Successfully deleted journal entry')
+
+          // Remove the journal id from our list of journal entries
+          this.removeJournalEntryFromList(this.journalEntry.id)
 
           //* Delete file associated with this journal entry
           // User doesn't need to wait for this, it will happen in the background

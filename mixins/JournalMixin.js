@@ -24,13 +24,14 @@ export default {
       return trackDetails
     },
 
-    loadJournalEntries(userUid) {
+    /** Load journal entries from the database */
+    loadJournalEntries(userUid, category = 'all') {
       this.journalEntriesLoading = true
 
       // Add the current journals to this page
       // ? We'll do this once then search through them locally for efficiency
       journalApi
-        .getJournalEntries(userUid)
+        .getJournalEntries(userUid, category)
         .then((journalEntriesFound) => {
           this.allJournalEntries = journalEntriesFound
           this.filteredJournalEntries = journalEntriesFound
