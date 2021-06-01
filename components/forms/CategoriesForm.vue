@@ -84,7 +84,7 @@
               >
                 <v-item>
                   <v-chip
-                    text-color="white"
+                    text-color="secondary"
                     class="d-inline-block text-center chip--category outline--dotted"
                     @click="addSuggestedCategory(category)"
                   >
@@ -118,6 +118,14 @@ export default {
     title: {
       type: String,
       default: "Let's get organized",
+    },
+    shouldPrepopulate: {
+      type: Boolean,
+      default: false,
+    },
+    userCategories: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {
@@ -165,6 +173,15 @@ export default {
       this.onUpdated(categories)
     },
   },
+  created() {
+    if (this.shouldPrepopulate) {
+      this.userCategories.forEach((category) => {
+        const categoryObj = { text: category }
+
+        this.addSuggestedCategory(categoryObj)
+      })
+    }
+  },
   methods: {
     /** Get the number of columns a category should occupy based on its length */
     getCategoryCols(categoryText) {
@@ -209,21 +226,15 @@ export default {
         (category) => category !== categoryToRemove
       )
 
-      // Reactivate the category suggestion if it was a suggestion
-      if (categoryToRemove.isSuggestion) {
-        this.categorySuggestions = this.categorySuggestions.map(
-          (suggestion) => {
-            if (
-              suggestion.text.toLowerCase() ===
-              categoryToRemove.text.toLowerCase()
-            ) {
-              suggestion.isActive = true
-            }
+      this.categorySuggestions = this.categorySuggestions.map((suggestion) => {
+        if (
+          suggestion.text.toLowerCase() === categoryToRemove.text.toLowerCase()
+        ) {
+          suggestion.isActive = true
+        }
 
-            return suggestion
-          }
-        )
-      }
+        return suggestion
+      })
     },
   },
 }
