@@ -44,72 +44,56 @@ export default {
     /** Search through a pre-existing list of journal entries
      * @description Usually, this function will receive the journal entries to search through from the component/page calling it
      * @param {String} searchQuery The search query
-     * @param {String} category A string representing the category to filter by. Defaults to 'all' meaning all categories
+     * @param {String} categoryToSearch A string representing the category to filter by. Defaults to 'all' meaning all categories
      * @return {Array<JournalEntry>} An array of journal entries found matching the given query
      */
-    searchJournalEntries(searchQuery = '', category = 'all') {
-      const searchThroughAllCategories = category === 'all'
+    searchJournalEntries(searchQuery = '', categoryToSearch = 'All') {
+      const searchThroughAllCategories =
+        categoryToSearch.toLowerCase() === 'all'
 
-      // TODO: Add option for filtering by date here
-      if (_.isEmpty(searchQuery) && searchThroughAllCategories) {
-        return this.allJournalEntries
+      // Entries to filter through
+      // TODO: Add date filtering to pre-filter journal entries
+      const journalEntriesToFilter = this.allJournalEntries
+
+      // When the search query is empty ~ we don't have to perform any complex searches
+      if (_.isEmpty(searchQuery)) {
+        // Return all records if we are searching through all categories
+        const filteredJournalEntries = searchThroughAllCategories
+          ? journalEntriesToFilter
+          : journalEntriesToFilter.filter(
+              (journalEntry) =>
+                journalEntry.category.toLowerCase() ===
+                categoryToSearch.toLowerCase()
+            )
+
+        return filteredJournalEntries
       }
 
-      // Convert to lowercase to negate case sensitivity
-      searchQuery = searchQuery.toLowerCase()
-      category = category.toLowerCase()
-
-      let filteredJournalEntries = this.allJournalEntries.map(
-        (currentJournalEntry) => {
-          // [Category search] When we are searching through all categories, the category field now becomes a search point
-          if (searchThroughAllCategories) {
-            const categoryContainsSearchQuery = currentJournalEntry.category
-              .toLowerCase()
-              .includes(category)
-
-            if (categoryContainsSearchQuery) {
-              // Add the current journal entry
-              return currentJournalEntry
-            }
-          }
-
-          // ? Using else if so that we don't add duplicates
-          // [Tag search] If there are tags, search through them first - this is faster than searching description
+      //* Getting here means that we DO HAVE a search query
+      const filteredJournalEntries = journalEntriesToFilter.filter(
+        ({ category, description }) => {
+          // [Category search] When searching through all categories ~ the category becomes a search point
           if (
-            _.isArray(currentJournalEntry.tags) &&
-            !_.isEmpty(currentJournalEntry.tags)
+            searchThroughAllCategories &&
+            category.toLowerCase().includes(searchQuery.toLowerCase())
           ) {
-            // .toLowerCase makes this case insensitive
-            const tagsContainSearchQuery = currentJournalEntry.tags
-              .map((entry) => entry.toLowerCase())
-              .includes(searchQuery)
-
-            if (tagsContainSearchQuery) {
-              // Add the current journal entry
-              return currentJournalEntry
-            }
-          }
-          // [Description search] Slowest to search through since it might be longer, only used as a last resort
-          if (_.isString(currentJournalEntry.description)) {
-            // Check description for search query
-            const descriptionContainsSearchQuery = currentJournalEntry.description
-              .toLowerCase()
-              .includes(searchQuery)
-
-            if (descriptionContainsSearchQuery) {
-              // Add the current journal entry
-              return currentJournalEntry
-            }
+            return true
           }
 
-          // If nothing was found ~ return false - this will be filtered out
+          // [Description search]
+          if (
+            !_.isEmpty(description) &&
+            description.toLowerCase().includes(searchQuery.toLowerCase())
+          ) {
+            return true
+          }
+
+          // Getting here means nothing was found in our previous searches
           return false
         }
       )
 
-      // Remove any empty entries
-      filteredJournalEntries = _.compact(filteredJournalEntries)
-
+      // Return the search results
       return filteredJournalEntries
     },
   },
