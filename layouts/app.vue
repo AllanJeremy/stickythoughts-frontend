@@ -153,20 +153,19 @@ export default {
           link: '/journal/categories',
         },
         {
-          icon: 'mdi-school-outline',
-          title: 'Tutorial',
-          link: '/journal/tutorial',
+          icon: 'mdi-palette',
+          title: 'Customization',
+          link: '/journal/customization',
         },
         {
           icon: 'mdi-credit-card-multiple-outline',
-          title: 'Billing',
+          title: 'Subscriptions',
           link: '/journal/subscriptions',
         },
-
         {
           icon: 'mdi-help-circle-outline',
-          title: 'Support',
-          link: '/journal/help',
+          title: 'Blog',
+          link: 'https://blog.stickythoughts.app?utm-source=app',
         },
         { icon: 'mdi-logout-variant', title: 'Logout', link: '/auth/logout' },
       ],
