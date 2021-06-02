@@ -73,7 +73,7 @@
     </v-dialog>
 
     <!-- Search and filter -->
-    <v-row class="align-center mb-8" no-gutters>
+    <v-row class="align-center mb-4" no-gutters>
       <v-spacer></v-spacer>
       <v-col cols="10" sm="6" lg="4">
         <div class="d-flex flex-row align-center">
@@ -107,6 +107,22 @@
         }}</v-chip>
       </v-col>
     </v-row>
+
+    <v-alert
+      v-if="filteredJournalEntries.length"
+      type="info"
+      text
+      dense
+      dismissible
+      color="secondary"
+      :value="true"
+      class="mb-4"
+    >
+      You can
+      <span class="d-none d-md-inline">click</span>
+      <span class="d-inline d-md-none">tap</span>
+      on any journal entry to view its details.
+    </v-alert>
 
     <!-- Journal entries -->
     <v-progress-linear
