@@ -140,11 +140,11 @@ import AudioPlayer from '@/components/audio/AudioPlayer.vue'
 import Loading from '@/components/Loading.vue'
 
 // Mixins
-import { NavMixin, UploadMixin } from '@/mixins'
+import { Analytics, NavMixin, UploadMixin } from '@/mixins'
 
 export default {
   components: { AudioPlayer, Loading },
-  mixins: [NavMixin, UploadMixin],
+  mixins: [Analytics.HotjarMixin, NavMixin, UploadMixin],
   data() {
     return {
       navIsOpen: false,
