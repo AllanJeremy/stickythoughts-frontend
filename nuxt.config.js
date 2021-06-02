@@ -39,6 +39,7 @@ export default {
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
+    '@nuxtjs/pwa',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -66,8 +67,10 @@ export default {
   pwa: {
     manifest: {
       name: 'StickyThoughts - Remember Everything',
-      short_name: 'Affiliates',
+      short_name: 'S-Thoughts',
+      description: 'Simple audio notes on all your devices.',
       lang: 'en',
+      background_color: '#FFF2CA',
     },
   },
 

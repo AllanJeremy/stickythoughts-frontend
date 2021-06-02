@@ -20,6 +20,7 @@
     "firebase": "^8.6.2",
     "firebaseui": "^4.8.0",
     "lodash": "^4.17.21",
+    "mixpanel-browser": "^2.41.0",
     "nuxt": "^2.15.3"
   },
   "devDependencies": {
