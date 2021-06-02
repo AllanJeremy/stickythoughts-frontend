@@ -149,7 +149,7 @@
     <v-scroll-y-transition>
       <v-row v-if="filteredJournalEntries.length">
         <v-col
-          v-for="(journalEntry, i) in filteredJournalEntries"
+          v-for="(journalEntry, i) in allJournalEntries"
           :key="`journal-${i}`"
           cols="12"
           sm="6"
@@ -158,7 +158,9 @@
           <JournalEntryCard
             :journal-entry="journalEntry"
             :categories="userData.categories"
-            :on-delete="removeJournalEntryFromList(journalEntry.id)"
+            :on-delete="
+              (journalEntryId) => removeJournalEntryFromList(journalEntryId)
+            "
           />
         </v-col>
       </v-row>
@@ -174,12 +176,12 @@ import { JournalMixin } from '@/mixins'
 
 // Components
 import EmptyContainer from '@/components/EmptyContainer.vue'
-import JournalEntryCard from '@/components/JournalEntryCard.vue'
+// import JournalEntryCard from '@/components/JournalEntryCard.vue'
 
 export default {
   components: {
     EmptyContainer,
-    JournalEntryCard,
+    // JournalEntryCard,
   },
   mixins: [JournalMixin],
   layout: 'app',
@@ -190,6 +192,7 @@ export default {
       filterSearchQuery: '',
       modalFilterJournalEntriesOpen: false,
       categories: [],
+      allJournalEntries: [],
     }
   },
   head() {
@@ -224,8 +227,8 @@ export default {
       )
     },
   },
-  created() {
-    this.loadJournalEntries(this.userData.uid)
+  async created() {
+    this.allJournalEntries = await this.loadJournalEntries(this.userData.uid)
 
     this.categories = ['All', ...this.userCategoriesSorted]
   },
