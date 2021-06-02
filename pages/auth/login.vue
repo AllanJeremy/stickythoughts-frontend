@@ -31,6 +31,11 @@ export default {
       // TODO: Add implementation
     }
   },
+  head() {
+    return {
+      title: 'Login / SignUp',
+    }
+  },
   mounted() {
     this.initializeFirebaseUi()
   },

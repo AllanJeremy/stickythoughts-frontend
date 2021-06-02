@@ -42,6 +42,11 @@ export default {
       btnUpdateCustomizationLoading: false,
     }
   },
+  head() {
+    return {
+      title: 'Customizations',
+    }
+  },
   computed: {
     ...mapState('user', { userData: 'data' }),
   },

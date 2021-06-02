@@ -42,6 +42,11 @@ export default {
       btnUpdateCategoriesLoading: false,
     }
   },
+  head() {
+    return {
+      title: 'My Categories',
+    }
+  },
   computed: {
     ...mapState('user', { userData: 'data' }),
   },
