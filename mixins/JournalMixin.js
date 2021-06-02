@@ -25,20 +25,21 @@ export default {
     },
 
     /** Load journal entries from the database */
-    loadJournalEntries(userUid, category = 'all') {
+    async loadJournalEntries(userUid, category = 'all') {
       this.journalEntriesLoading = true
 
       // Add the current journals to this page
       // ? We'll do this once then search through them locally for efficiency
-      journalApi
-        .getJournalEntries(userUid, category)
-        .then((journalEntriesFound) => {
-          this.allJournalEntries = journalEntriesFound
-          this.filteredJournalEntries = journalEntriesFound
-        })
-        .finally(() => {
-          this.journalEntriesLoading = false
-        })
+      this.allJournalEntries = await journalApi.getJournalEntries(
+        userUid,
+        category
+      )
+
+      this.filteredJournalEntries = this.allJournalEntries
+
+      this.journalEntriesLoading = false
+
+      return this.allJournalEntries
     },
 
     removeJournalEntryFromList(journalEntryId) {
