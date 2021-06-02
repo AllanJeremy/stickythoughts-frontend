@@ -77,6 +77,7 @@
     </v-app-bar>
 
     <v-navigation-drawer
+      v-if="userFoundInDb"
       v-model="navIsOpen"
       class="nav"
       src="/minimalist-white-workspace.jpg"
@@ -88,8 +89,10 @@
       ></div>
       <v-list-item class="d-flex">
         <v-list-item-content>
-          <v-list-item-title class="title">Allan Jeremy</v-list-item-title>
-          <v-list-item-subtitle>0 Day Streak</v-list-item-subtitle>
+          <v-list-item-title class="title">{{
+            userData.name
+          }}</v-list-item-title>
+          <v-list-item-subtitle>{{ userData.email }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
@@ -182,6 +185,7 @@ export default {
   computed: {
     ...mapState('user', {
       userLoading: 'isLoading',
+      userLoggedIn: 'isLoggedIn',
       userData: 'data',
       uiCustomization: 'customization',
     }),
