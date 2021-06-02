@@ -387,6 +387,7 @@ export default {
         .updateJournal(this.journalEntry.id, updateData)
         .then(() => {
           this.$toast.success('Successfully updated journal')
+          this.modalEditJournalEntryOpen = false
         })
         .catch(() => {
           this.$toast.error(defaultErrorMessage)
