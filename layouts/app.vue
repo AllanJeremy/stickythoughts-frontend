@@ -166,7 +166,7 @@ export default {
           link: '/journal/subscriptions',
         },
         {
-          icon: 'mdi-help-circle-outline',
+          icon: 'mdi-post-outline',
           title: 'Blog',
           link: 'https://blog.stickythoughts.app?utm-source=app',
         },
