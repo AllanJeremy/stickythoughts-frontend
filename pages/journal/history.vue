@@ -72,8 +72,8 @@
       </v-card>
     </v-dialog>
 
-    <!-- Search and filter -->
-    <v-row class="align-center mb-4" no-gutters>
+    <!-- Search and filter -> Only displayed when there are journal entries -->
+    <v-row v-if="allJournalEntries.length" class="align-center mb-4" no-gutters>
       <v-spacer></v-spacer>
       <v-col cols="10" sm="6" lg="4">
         <div class="d-flex flex-row align-center">
