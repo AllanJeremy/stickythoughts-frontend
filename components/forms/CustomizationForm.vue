@@ -14,8 +14,6 @@
           :key="`color-${i}`"
           class="d-flex justify-center align-center"
           cols="4"
-          sm="3"
-          md="2"
         >
           <div :class="color.isActive ? 'ring' : ''">
             <v-card
