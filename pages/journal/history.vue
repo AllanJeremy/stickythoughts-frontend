@@ -158,6 +158,7 @@
           <JournalEntryCard
             :journal-entry="journalEntry"
             :categories="userData.categories"
+            :on-delete="removeJournalEntryFromList(journalEntry.id)"
           />
         </v-col>
       </v-row>

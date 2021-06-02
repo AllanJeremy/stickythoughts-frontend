@@ -41,6 +41,18 @@ export default {
         })
     },
 
+    removeJournalEntryFromList(journalEntryId) {
+      // Remove it from all journal entries
+      this.allJournalEntries = this.allJournalEntries.filter(
+        (journalEntry) => journalEntry.id !== journalEntryId
+      )
+
+      //  Remove it from filtered entries
+      this.filteredJournalEntries = this.filteredJournalEntries.filter(
+        (journalEntry) => journalEntry.id !== journalEntryId
+      )
+    },
+
     /** Search through a pre-existing list of journal entries
      * @description Usually, this function will receive the journal entries to search through from the component/page calling it
      * @param {String} searchQuery The search query
