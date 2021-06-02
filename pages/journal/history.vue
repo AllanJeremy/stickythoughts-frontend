@@ -94,6 +94,18 @@
           <v-icon>mdi-filter-variant</v-icon>
         </v-btn>
       </v-col>
+
+      <v-col
+        v-if="filterCategory.toLowerCase() !== 'all'"
+        cols="10"
+        md="11"
+        class="d-md-flex justify-md-end"
+      >
+        <v-spacer></v-spacer>
+        <v-chip outline pill small color="secondary" class="text-right mt-2">{{
+          filterCategory
+        }}</v-chip>
+      </v-col>
     </v-row>
 
     <!-- Journal entries -->
