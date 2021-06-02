@@ -11,7 +11,7 @@
       <v-tab to="/journal/history">History</v-tab>
     </v-tabs>
 
-    <section style="max-width: 45rem; margin: auto">
+    <section>
       <div>
         <label class="font-weight-bold" for="recordCategory">Category</label>
         <v-select

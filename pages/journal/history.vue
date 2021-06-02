@@ -137,7 +137,6 @@
           :key="`journal-${i}`"
           cols="12"
           sm="6"
-          md="4"
           class="py-0"
         >
           <JournalEntryCard
