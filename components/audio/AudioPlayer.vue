@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-sheet v-model="playerIsOpen" hide-overlay>
+  <v-bottom-sheet v-model="playerIsOpen" hide-overlay attach="#appContainer">
     <v-card
       class="d-flex justify-space-around align-center"
       height="7.5rem"

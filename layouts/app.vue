@@ -121,7 +121,12 @@
 
     <Loading v-if="!userFoundInDb" />
     <!-- Actual content -->
-    <v-container v-else class="px-8 py-4" style="max-width: 45rem">
+    <v-container
+      v-else
+      id="appContainer"
+      class="px-8 py-4"
+      style="max-width: 45rem"
+    >
       <Nuxt />
     </v-container>
   </v-app>
