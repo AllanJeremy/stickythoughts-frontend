@@ -44,7 +44,7 @@ export default {
   },
   head() {
     return {
-      title: 'Customizations',
+      title: 'Customization',
     }
   },
   computed: {
