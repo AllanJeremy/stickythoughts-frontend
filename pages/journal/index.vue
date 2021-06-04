@@ -50,8 +50,5 @@ export default {
       window.location.href = redirectUrl
     },
   },
-  mounted() {
-    console.log('Created: User data: ', JSON.stringify(this.userData))
-  },
 }
 </script>
