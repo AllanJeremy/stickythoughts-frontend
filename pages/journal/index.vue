@@ -26,7 +26,7 @@ export default {
   },
   watch: {
     userData(user) {
-      if (_.isEmpty(user) || !_.isEmpty(user.categories)) return
+      if (_.isEmpty(user.categories)) return
 
       //* Getting here means the user's data was found in the store
 
