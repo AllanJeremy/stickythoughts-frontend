@@ -7,7 +7,7 @@
       :background-color="uiCustomization.color.background"
       fixed-tabs
     >
-      <v-tab to="/journal/record">Record</v-tab>
+      <v-tab class="font-weight-bold" to="/journal/record">Record</v-tab>
       <v-tab to="/journal/history">History</v-tab>
     </v-tabs>
 

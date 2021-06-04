@@ -1,3 +1,11 @@
+@import 'variables';
+
+/* Font override */
+.v-application {
+  font-family: $body-font-family, sans-serif !important;
+}
+
+/* Pulsate animation */
 @keyframes pulsate {
   0% {
     opacity: 0;
