@@ -25,8 +25,8 @@ export default {
     }),
   },
   watch: {
-    userData(data) {
-      if (_.isEmpty(data)) return
+    userData(user) {
+      if (_.isEmpty(user) || !_.isEmpty(user.categories)) return
 
       //* Getting here means the user's data was found in the store
 
@@ -36,7 +36,7 @@ export default {
         redirectUrl = '/auth/login'
       }
       // New user
-      else if (this.userData.isNew) {
+      else if (user.isNew) {
         redirectUrl = '/journal/onboarding'
         this.$toast.info('Welcome to StickyThoughts')
       }
