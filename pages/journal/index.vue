@@ -19,28 +19,38 @@ export default {
   },
   computed: {
     ...mapState('user', {
+      userLoading: 'isLoading',
       userLoggedIn: 'isLoggedIn',
       userData: 'data',
     }),
   },
   watch: {
-    userLoggedIn(isLoggedIn) {
+    userData(data) {
+      if (_.isEmpty(data)) return
+
+      //* Getting here means the user's data was found in the store
+
       let redirectUrl
 
-      if (!isLoggedIn) {
+      if (!this.userLoggedIn) {
         redirectUrl = '/auth/login'
       }
       // New user
-      else if (_.isEmpty(this.userData.dateJoined)) {
+      else if (this.userData.isNew) {
         redirectUrl = '/journal/onboarding'
+        this.$toast.info('Welcome to StickyThoughts')
       }
       // Existing user
       else {
+        this.$toast.success(`Welcome back, ${this.userData.name}!`)
         redirectUrl = '/journal/record'
       }
 
       this.goTo(redirectUrl)
     },
+  },
+  mounted() {
+    console.log('Created: User data: ', JSON.stringify(this.userData))
   },
 }
 </script>
