@@ -46,7 +46,8 @@ export default {
         redirectUrl = '/journal/record'
       }
 
-      this.goTo(redirectUrl)
+      // Simulates a click - loads a new page
+      window.location.href = redirectUrl
     },
   },
   mounted() {
