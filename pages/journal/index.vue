@@ -32,11 +32,8 @@ export default {
 
       let redirectUrl
 
-      if (!this.userLoggedIn) {
-        redirectUrl = '/auth/login'
-      }
       // New user
-      else if (user.isNew) {
+      if (user.isNew) {
         redirectUrl = '/journal/onboarding'
         this.$toast.info('Welcome to StickyThoughts')
       }
