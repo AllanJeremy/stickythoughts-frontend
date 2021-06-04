@@ -52,7 +52,6 @@
               v-for="(category, i) in categories"
               :key="`cat-${i}`"
               :cols="getCategoryCols(category.text)"
-              :md="getCategoryCols(category.text) / 2"
               class="pb-0"
             >
               <v-slide-x-reverse-transition>
@@ -82,7 +81,6 @@
                 :key="`suggested-cat-${i}`"
                 class="pb-0"
                 cols="6"
-                md="3"
               >
                 <v-item>
                   <v-chip
