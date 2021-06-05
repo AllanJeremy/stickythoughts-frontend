@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { mapState } from 'vuex'
 
 // Components
@@ -29,6 +30,13 @@ export default {
       userLoading: 'isLoading',
       userData: 'data',
     }),
+  },
+  watch: {
+    userData(user) {
+      if (!_.isEmpty(user.categories) && !user.isNew) {
+        window.location.href = '/journal/record'
+      }
+    },
   },
 }
 </script>
