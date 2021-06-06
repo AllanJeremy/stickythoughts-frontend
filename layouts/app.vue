@@ -4,7 +4,7 @@
       <v-progress-linear
         v-if="somethingIsUploading"
         indeterminate
-        color="rgb(237, 171, 84)"
+        color="secondary"
         max="100"
       ></v-progress-linear>
     </v-fade-transition>
