@@ -12,11 +12,20 @@
       you.
     </p>
 
+    <!-- Progress bar shown when logged in but loading -->
+    <v-progress-linear
+      v-if="userCreationLoading"
+      :indeterminate="true"
+      :color="uiCustomization.color.background"
+    ></v-progress-linear>
+
     <div ref="firebaseuiAuthContainer"></div>
   </section>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import { auth, firebase } from '@/helpers/firebase'
 import * as firebaseui from 'firebaseui'
 import 'firebaseui/dist/firebaseui.css'
@@ -28,9 +37,13 @@ export default {
   mixins: [NavMixin],
   data() {
     return {
-      // TODO: Add implementation
+      userCreationLoading: false,
     }
   },
+  computed: {
+    ...mapState('user', { uiCustomization: 'customization' }),
+  },
+  // eslint-disable-next-line vue/order-in-components
   head() {
     return {
       title: 'Login / SignUp',
@@ -52,19 +65,28 @@ export default {
           firebase.auth.EmailAuthProvider.PROVIDER_ID,
         ],
         signInFlow: 'popup',
-        signInSuccessUrl: '/journal/',
         callbacks: {
-          signInSuccessWithAuthResult({ user }, _redirectUrl) {
+          signInSuccessWithAuthResult: ({ user }, _redirectUrl) => {
             const newUserData = {
               uid: user.uid,
               name: user.displayName,
               email: user.email,
             }
 
+            this.userCreationLoading = true
+
             // User successfully signed in.
-            return userApi.createUser(newUserData).then(() => {
-              window.location.href = '/journal/'
-            })
+            userApi
+              .createUser(newUserData)
+              .then(() => {
+                window.location.href = '/journal/'
+              })
+              .finally(() => {
+                this.$toast.success('Login successful!')
+                this.userCreationLoading = false
+              })
+
+            return false
           },
           uiShown() {
             // The widget is rendered.
