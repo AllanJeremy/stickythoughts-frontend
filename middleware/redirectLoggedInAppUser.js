@@ -10,6 +10,13 @@ const redirectLoggedInAppUser = ({ redirect, route, store }) => {
         ? '/journal/onboarding'
         : '/journal/record'
 
+      console.log('redirecting to: ', redirectUrl)
+      console.log('Path: ', route.path)
+      console.log(
+        'Path is same as redirect: ',
+        route.path.includes(redirectUrl)
+      )
+
       clearInterval(interval)
 
       // Prevent infinite redirects by only redirecting if we aren't already on the page
