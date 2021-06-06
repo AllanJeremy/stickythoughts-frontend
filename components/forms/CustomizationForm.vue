@@ -84,8 +84,12 @@ export default {
   },
   created() {
     if (this.shouldPrepopulate) {
+      const backgroundColor = this.userCustomization
+        ? this.userCustomization.color.background
+        : defaultColor.backgroundColor
+
       const colorObj = {
-        backgroundColor: this.userCustomization.color.background,
+        backgroundColor,
       }
 
       this.selectColor(colorObj)
