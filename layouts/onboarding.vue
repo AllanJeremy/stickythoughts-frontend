@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import { mapState } from 'vuex'
 
 // Components
@@ -22,6 +21,7 @@ import Loading from '@/components/Loading.vue'
 
 export default {
   components: { Loading },
+  middleware: ['redirectLoggedInAppUser'],
   data() {
     return {}
   },
@@ -30,13 +30,6 @@ export default {
       userLoading: 'isLoading',
       userData: 'data',
     }),
-  },
-  watch: {
-    userData(user) {
-      if (!_.isEmpty(user.categories) && !user.isNew) {
-        window.location.href = '/journal/record'
-      }
-    },
   },
 }
 </script>

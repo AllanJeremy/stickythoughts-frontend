@@ -60,6 +60,7 @@ export default {
   components: { AudioRecorder },
   mixins: [UploadMixin],
   layout: 'app',
+  middleware: ['redirectLoggedInAppUser'], // ? Worth noting that this will be added to the default success page upon login for app users, for now this is the record page
   data() {
     return {
       selectedCategory: { text: 'Ideas', value: '1' },
