@@ -67,7 +67,7 @@ export default {
     manifest: {
       name: 'StickyThoughts - Remember Everything',
       short_name: 'S-Thoughts',
-      description: 'Simple audio notes on all your devices.',
+      description: 'Simple audio journaling on all your devices.',
       lang: 'en',
       background_color: '#FFF2CA',
     },
