@@ -5,6 +5,7 @@ const redirectLoggedInAppUser = ({ redirect, route, store }) => {
 
     // User was found
     if (Object.keys(userData).length) {
+      console.log('user: ', userData)
       const redirectUrl = userData.isNew
         ? '/journal/onboarding'
         : '/journal/record'
