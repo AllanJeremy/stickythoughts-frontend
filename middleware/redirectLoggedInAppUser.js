@@ -1,4 +1,4 @@
-const redirectLoggedInAppUser = ({ route, store }) => {
+const redirectLoggedInAppUser = ({ redirect, route, store }) => {
   // Keep checking until we get a user
   const interval = setInterval(() => {
     const { data: userData } = store.state.user
@@ -13,7 +13,7 @@ const redirectLoggedInAppUser = ({ route, store }) => {
 
       // Prevent infinite redirects by only redirecting if we aren't already on the page
       if (!route.path.includes(redirectUrl)) {
-        window.location.href = redirectUrl
+        redirect(redirectUrl)
       }
     }
   }, 100)
