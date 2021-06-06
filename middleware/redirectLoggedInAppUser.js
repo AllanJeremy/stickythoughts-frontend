@@ -5,17 +5,10 @@ const redirectLoggedInAppUser = ({ redirect, route, store }) => {
 
     // User was found
     if (Object.keys(userData).length) {
-      console.log('user: ', userData)
-      const redirectUrl = userData.isNew
-        ? '/journal/onboarding'
-        : '/journal/record'
-
-      console.log('redirecting to: ', redirectUrl)
-      console.log('Path: ', route.path)
-      console.log(
-        'Path is same as redirect: ',
-        route.path.includes(redirectUrl)
-      )
+      // A user is considered new if they don't have any categories setup
+      const redirectUrl = userData.categories
+        ? '/journal/record'
+        : '/journal/onboarding'
 
       clearInterval(interval)
 
