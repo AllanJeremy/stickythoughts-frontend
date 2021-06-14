@@ -15,14 +15,6 @@
           rel="noopener noreferrer"
           ><i>Allan Jeremy</i></a
         >
-        &amp;
-        <a
-          class="grey--text"
-          href="https://www.instagram.com/journalingtherapy_ke/"
-          target="_blank"
-          rel="noopener noreferrer"
-          ><i>Journaling Therapy</i></a
-        >
       </small>
     </v-footer>
   </v-app>
