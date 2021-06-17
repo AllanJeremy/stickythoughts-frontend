@@ -1,5 +1,7 @@
 <template>
-  <section class="mh-full d-flex flex-column align-center justify-center">
+  <section
+    class="mh-login-container d-flex flex-column align-center justify-center"
+  >
     <img
       src="/logo-plain.png"
       height="200"
@@ -110,7 +112,7 @@ export default {
 </script>
 
 <style scoped>
-.mh-full {
-  min-height: calc(100vh - 4rem);
+.mh-login-container {
+  min-height: calc(100vh - 10rem);
 }
 </style>
