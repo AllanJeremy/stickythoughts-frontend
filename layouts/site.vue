@@ -1,21 +1,41 @@
 <template>
   <v-app>
-    <v-toolbar max-height="4rem">
-      <img
-        src="/logo-horizontal-light-bg.svg"
-        alt="StickyThoughts logo"
-        height="100%"
-      />
+    <v-toolbar flat max-height="4rem">
+      <nuxt-link to="/">
+        <v-img
+          src="/logo-horizontal-light-bg.svg"
+          alt="StickyThoughts logo"
+          width="15rem"
+      /></nuxt-link>
+      <nuxt-link to="/"> </nuxt-link>
       <v-spacer></v-spacer>
-      <v-btn text large>Why StickyThoughts</v-btn>
-      <v-btn text to="/pricing">Pricing</v-btn>
+
+      <ul class="nav">
+        <li>
+          <nuxt-link to="/why">Why StickyThoughts</nuxt-link>
+        </li>
+        <li>
+          <nuxt-link to="/pricing">Plans</nuxt-link>
+        </li>
+        <li>
+          <a target="_blank" href="https://blog.stickythoughts.app?source=app"
+            >Blog <v-icon small>mdi-open-in-new</v-icon></a
+          >
+        </li>
+      </ul>
+
       <v-spacer></v-spacer>
-      <v-btn class="font-weight-bold" outlined color="teal"
+      <v-btn
+        class="font-weight-bold"
+        outlined
+        color="teal"
+        link
+        to="/auth/login"
         >Login / Signup</v-btn
       >
     </v-toolbar>
     <v-main>
-      <v-container>
+      <v-container fluid>
         <Nuxt />
       </v-container>
     </v-main>
@@ -43,3 +63,25 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.nav {
+  li {
+    list-style: none;
+    display: inline-block;
+    margin: auto 1.5rem;
+
+    a {
+      color: #212121;
+      text-decoration: none !important;
+      text-transform: uppercase;
+      font-size: 80%;
+
+      &.nuxt-link-active {
+        font-weight: bold;
+        color: teal;
+      }
+    }
+  }
+}
+</style>
