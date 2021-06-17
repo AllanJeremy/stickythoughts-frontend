@@ -2,11 +2,11 @@
   <section class="mh-full d-flex flex-column align-center justify-center">
     <img
       src="/logo-plain.png"
-      height="256"
+      height="200"
       alt="StickyThoughts - Remember everything. Logo."
     />
 
-    <h2 class="secondary--text">Welcome onboard</h2>
+    <h1 class="secondary--text">Welcome onboard</h1>
     <p class="font-weight-light text-center">
       You are one step away from preserving the thoughts that matter the most to
       you.
@@ -19,6 +19,11 @@
       :color="uiCustomization.color.background"
     ></v-progress-linear>
 
+    <v-progress-linear
+      id="loader"
+      indeterminate
+      color="amber"
+    ></v-progress-linear>
     <div ref="firebaseuiAuthContainer"></div>
   </section>
 </template>
@@ -35,6 +40,7 @@ import { userApi } from '@/apiRequests'
 
 export default {
   mixins: [NavMixin],
+  layout: 'site',
   data() {
     return {
       userCreationLoading: false,
@@ -55,13 +61,16 @@ export default {
   methods: {
     initializeFirebaseUi() {
       // Initialize the FirebaseUI Widget using Firebase.
-      const ui = new firebaseui.auth.AuthUI(auth)
+      let ui = firebaseui.auth.AuthUI.getInstance()
+
+      if (!ui) {
+        ui = new firebaseui.auth.AuthUI(auth)
+      }
 
       ui.start(this.$refs.firebaseuiAuthContainer, {
         signInOptions: [
           // List of OAuth providers supported.
           firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          firebase.auth.TwitterAuthProvider.PROVIDER_ID,
           firebase.auth.EmailAuthProvider.PROVIDER_ID,
         ],
         signInFlow: 'popup',
