@@ -24,8 +24,12 @@
       </p>
     </article>
 
-    <div class="d-flex flex-column align-center" style="height: 80vh">
-      <img src="/mockup.png" alt="" height="100%" />
+    <div class="d-flex flex-column align-center" style="height: 100vh">
+      <img
+        src="/mockup.png"
+        alt="StickyThoughts audio notes mockup"
+        height="100%"
+      />
     </div>
   </div>
 </template>
