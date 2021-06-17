@@ -5,12 +5,12 @@
         <v-img
           src="/logo-horizontal-light-bg.svg"
           alt="StickyThoughts logo"
-          width="15rem"
+          width="14rem"
       /></nuxt-link>
       <nuxt-link to="/"> </nuxt-link>
       <v-spacer></v-spacer>
 
-      <ul class="nav">
+      <ul class="nav d-none d-md-inline-block">
         <li>
           <nuxt-link to="/why">Why StickyThoughts</nuxt-link>
         </li>
@@ -25,14 +25,18 @@
       </ul>
 
       <v-spacer></v-spacer>
+
+      <!-- Login/Signup -->
       <v-btn
-        class="font-weight-bold"
+        class="font-weight-bold d-none d-sm-flex"
         outlined
         color="teal"
         link
         to="/auth/login"
         >Login / Signup</v-btn
       >
+
+      <!-- Navigation drawer -->
     </v-toolbar>
     <v-main>
       <v-container fluid>
@@ -59,6 +63,7 @@ export default {
   data() {
     return {
       fixed: false,
+      navIsOpen: false,
     }
   },
 }
