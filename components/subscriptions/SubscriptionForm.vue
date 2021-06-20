@@ -25,7 +25,14 @@
           </ul>
 
           <v-card-actions class="mt-5">
-            <v-btn outlined depressed block color="error" large
+            <v-btn
+              outlined
+              depressed
+              block
+              color="error"
+              large
+              link
+              :to="`${redirect}?plan=free`"
               >Get started for free</v-btn
             >
           </v-card-actions>
@@ -86,7 +93,15 @@
           </ul>
 
           <v-card-actions class="mt-5">
-            <v-btn depressed block color="error" large>Upgrade to pro</v-btn>
+            <v-btn
+              depressed
+              block
+              color="error"
+              large
+              link
+              :to="`${redirect}?plan=pro`"
+              >Upgrade to pro</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-col>
@@ -115,7 +130,14 @@
           </ul>
 
           <v-card-actions class="mt-5">
-            <v-btn outlined depressed block color="error" large
+            <v-btn
+              outlined
+              depressed
+              block
+              color="error"
+              large
+              link
+              :to="`${redirect}?plan=lifetime`"
               >Get the lifetime deal</v-btn
             >
           </v-card-actions>
@@ -128,6 +150,12 @@
 <script>
 export default {
   name: 'SubscriptionForm',
+  props: {
+    redirect: {
+      type: String,
+      default: '/journal',
+    },
+  },
   data() {
     return {
       planSelected: 'pro',
