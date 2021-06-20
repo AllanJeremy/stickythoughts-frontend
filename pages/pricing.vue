@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="bg-image bg-full" id="bg-subscription"></div>
+    <div id="bg-subscription" class="bg-image bg-full"></div>
 
     <article>
       <div
@@ -14,7 +14,7 @@
           Simple pricing to meet your needs
         </p>
       </div>
-      <SubscriptionForm />
+      <SubscriptionForm redirect="/auth/login" />
     </article>
   </section>
 </template>
