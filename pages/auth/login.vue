@@ -33,11 +33,18 @@
 <script>
 import { mapState } from 'vuex'
 
+// Firebase
 import { auth, firebase } from '@/helpers/firebase'
 import * as firebaseui from 'firebaseui'
 import 'firebaseui/dist/firebaseui.css'
 
+// Mixins
 import { NavMixin } from '@/mixins'
+
+// Helpers
+import { getLinkWithQueryParams } from '@/helpers/redirect'
+
+// API requests
 import { userApi } from '@/apiRequests'
 
 export default {
@@ -48,14 +55,13 @@ export default {
       userCreationLoading: false,
     }
   },
-  computed: {
-    ...mapState('user', { uiCustomization: 'customization' }),
-  },
-  // eslint-disable-next-line vue/order-in-components
   head() {
     return {
       title: 'Login / SignUp',
     }
+  },
+  computed: {
+    ...mapState('user', { uiCustomization: 'customization' }),
   },
   mounted() {
     this.initializeFirebaseUi()
@@ -90,7 +96,12 @@ export default {
             userApi
               .createUser(newUserData)
               .then(() => {
-                window.location.href = '/journal/'
+                const redirectUrl = getLinkWithQueryParams(
+                  '/journal/',
+                  this.$route
+                )
+
+                window.location.href = redirectUrl
               })
               .finally(() => {
                 this.$toast.success('Login successful!')
