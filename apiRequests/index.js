@@ -4,7 +4,8 @@
 */
 import journalApi from './journal'
 import marketInsightApi from './marketInsight'
+import paymentApi from './payment'
 import userApi from './user'
 
 //* EXPORTS
-export { journalApi, marketInsightApi, userApi }
+export { journalApi, marketInsightApi, paymentApi, userApi }
