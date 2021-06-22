@@ -1,28 +1,46 @@
 <template>
   <section>
     <v-row>
-      <v-col cols="12" sm="4">
-        <v-card class="my-4 py-6 px-8">
+      <v-col cols="12" sm="6" md="4">
+        <v-card class="my-4 py-6 px-8" :min-height="subscriptionCardMinHeight">
           <h2 class="secondary--text">
             <v-icon size="2rem">mdi-text-to-speech</v-icon> Basic
           </h2>
           <h1 class="display-1">FREE</h1>
-          <h5 class="pricing-tagline">Save your thoughts everywhere</h5>
-          <ul class="pl-0 mt-4">
-            <li>
-              <v-icon>mdi-check</v-icon> Record audio notes on all devices
-            </li>
-            <li><v-icon>mdi-check</v-icon> Organize and filter audio notes</li>
-            <li>
-              <v-icon>mdi-check</v-icon> Share audio notes
-              <small class="secondary--text">(Coming soon)</small>
-            </li>
-            <li><v-icon>mdi-check</v-icon> 5 minutes recording time per day</li>
-            <li>
-              <v-icon>mdi-check</v-icon> Feature updates &amp; improvements
-            </li>
-            <li><v-icon>mdi-check</v-icon> Discord community access</li>
-          </ul>
+
+          <v-expansion-panels v-model="detailsExpanded" flat>
+            <v-expansion-panel>
+              <v-expansion-panel-header class="px-0 py-0">
+                <h5 class="pricing-tagline">Save your thoughts everywhere</h5>
+
+                <template #actions>
+                  <v-icon> mdi-menu-down </v-icon>
+                </template>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content eager>
+                <ul class="pl-0 mt-4">
+                  <li>
+                    <v-icon>mdi-check</v-icon> Record audio notes on all devices
+                  </li>
+                  <li>
+                    <v-icon>mdi-check</v-icon> Organize and filter audio notes
+                  </li>
+                  <li>
+                    <v-icon>mdi-check</v-icon> Share audio notes
+                    <small class="secondary--text">(Coming soon)</small>
+                  </li>
+                  <li>
+                    <v-icon>mdi-check</v-icon> 5 minutes recording time per day
+                  </li>
+                  <li>
+                    <v-icon>mdi-check</v-icon> Feature updates &amp;
+                    improvements
+                  </li>
+                  <li><v-icon>mdi-check</v-icon> Discord community access</li>
+                </ul>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
 
           <v-card-actions class="mt-5">
             <v-btn
@@ -38,8 +56,8 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="4">
-        <v-card class="my-4 py-6 px-8">
+      <v-col cols="12" sm="6" md="4">
+        <v-card class="my-4 py-6 px-8" :min-height="subscriptionCardMinHeight">
           <div class="d-flex justify-space-between align-start">
             <h2 class="secondary--text">
               <v-icon size="2rem">mdi-medal</v-icon> Pro
@@ -71,26 +89,44 @@
             >(${{ proAnnualPlanPaymentTotal }} per year)</span
           >
 
-          <h5 class="pricing-tagline">Remember all that matters</h5>
-          <ul class="pl-0 mt-4">
-            <li><v-icon>mdi-arrow-left</v-icon> Everything in Basic</li>
-            <li><v-icon>mdi-check</v-icon> Unlimited recording time</li>
+          <v-expansion-panels v-model="detailsExpanded" flat>
+            <v-expansion-panel>
+              <v-expansion-panel-header class="px-0 py-0">
+                <h5 class="pricing-tagline">Remember all that matters</h5>
 
-            <li><v-icon>mdi-check</v-icon> Priority on feature requests</li>
-            <li>
-              <v-icon>mdi-check</v-icon> Automatic voice-to-text
-              <small class="secondary--text">(Coming soon)</small>
-            </li>
-            <li><v-icon>mdi-check</v-icon> Priority on feature requests</li>
-            <li>
-              <v-icon>mdi-check</v-icon>
-              <span class="font-weight-bold teal--text">
-                <v-icon color="teal" small>mdi-shield-star-outline</v-icon>
-                Pro
-              </span>
-              badge in community
-            </li>
-          </ul>
+                <template #actions>
+                  <v-icon> mdi-menu-down </v-icon>
+                </template>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content eager>
+                <ul class="pl-0 mt-4">
+                  <li><v-icon>mdi-arrow-left</v-icon> Everything in Basic</li>
+                  <li><v-icon>mdi-check</v-icon> Unlimited recording time</li>
+
+                  <li>
+                    <v-icon>mdi-check</v-icon> Priority on feature requests
+                  </li>
+                  <li>
+                    <v-icon>mdi-check</v-icon> Automatic voice-to-text
+                    <small class="secondary--text">(Coming soon)</small>
+                  </li>
+                  <li>
+                    <v-icon>mdi-check</v-icon> Priority on feature requests
+                  </li>
+                  <li>
+                    <v-icon>mdi-check</v-icon>
+                    <span class="font-weight-bold teal--text">
+                      <v-icon color="teal" small
+                        >mdi-shield-star-outline</v-icon
+                      >
+                      Pro
+                    </span>
+                    badge in community
+                  </li>
+                </ul>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
 
           <v-card-actions class="mt-5">
             <v-btn
@@ -106,28 +142,44 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" sm="4">
-        <v-card class="my-4 py-6 px-8">
+      <v-col cols="12" sm="8" md="4" class="mx-sm-auto">
+        <v-card class="my-4 py-6 px-8" :min-height="subscriptionCardMinHeight">
           <h2 class="secondary--text">
             <v-icon color="purple" size="2rem">mdi-trophy-award</v-icon>
             Lifetime
           </h2>
           <h1 class="display-1">$349</h1>
-          <h5 class="pricing-tagline">For the believers</h5>
 
-          <ul class="pl-0 mt-4">
-            <li><v-icon>mdi-arrow-left</v-icon> Everything in Pro. Forever</li>
-            <li><v-icon>mdi-check</v-icon> Founder lounge room access</li>
+          <v-expansion-panels v-model="detailsExpanded" flat>
+            <v-expansion-panel>
+              <v-expansion-panel-header class="px-0 py-0">
+                <h5 class="pricing-tagline">For the believers</h5>
 
-            <li>
-              <v-icon>mdi-check</v-icon>
-              <span class="font-weight-bold purple--text">
-                <v-icon color="purple" small>mdi-shield-star-outline</v-icon>
-                Legend
-              </span>
-              badge in community
-            </li>
-          </ul>
+                <template #actions>
+                  <v-icon> mdi-menu-down </v-icon>
+                </template>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content eager>
+                <ul class="pl-0">
+                  <li>
+                    <v-icon>mdi-arrow-left</v-icon> Everything in Pro. Forever
+                  </li>
+                  <li><v-icon>mdi-check</v-icon> Founder lounge room access</li>
+
+                  <li>
+                    <v-icon>mdi-check</v-icon>
+                    <span class="font-weight-bold purple--text">
+                      <v-icon color="purple" small
+                        >mdi-shield-star-outline</v-icon
+                      >
+                      Legend
+                    </span>
+                    badge in community
+                  </li>
+                </ul>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
 
           <v-card-actions class="mt-5">
             <v-btn
@@ -153,22 +205,42 @@ export default {
   props: {
     redirect: {
       type: String,
-      default: '/journal',
+      default: '/billing/subscribe',
     },
   },
   data() {
     return {
       planSelected: 'pro',
       proPlanIsAnnual: true,
+
       paidPlanPricing: {
         pro: {
           annualMonthlyPrice: 9.5,
           monthlyPrice: 14.5,
         },
       },
+
+      // Added this here so it can be shared
+      subscriptionCardMinHeight: '18.25rem',
     }
   },
   computed: {
+    detailsExpanded() {
+      // ? 0 = expanded , anything else means closed
+      // Start off closed on mobile & open on screens that can show multiple of them above the fold eg. tablets and above
+
+      // Default status is expanded
+      let isExpanded = 0
+
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs':
+          // Start as collapsed on mobile devices
+          isExpanded = -1
+          break
+      }
+
+      return isExpanded
+    },
     proPlanName() {
       return this.proPlanIsAnnual ? 'pro_yearly' : 'pro_monthly'
     },
@@ -205,5 +277,10 @@ ul {
   text-transform: uppercase;
   letter-spacing: 1px;
   opacity: 0.84;
+}
+
+/* Vuetify overrides */
+.v-expansion-panel-content::v-deep .v-expansion-panel-content__wrap {
+  padding: 0 !important;
 }
 </style>
