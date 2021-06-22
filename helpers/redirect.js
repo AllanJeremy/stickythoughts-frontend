@@ -16,9 +16,10 @@ const getLinkWithQueryParams = (redirectLink, $route) => {
   queryKeys.forEach((param, i) => {
     const paramValue = query[param]
 
-    if (i === 0) {
+    // Only add `?` if there are no existing query params in the redirect url provided
+    if (i === 0 && !redirectLink.includes('?')) {
       redirectLink += '?'
-    } else if (i !== queryKeys.length - 1) {
+    } else {
       // First and last params don't have a `&`  prepended to them
       redirectLink += '&'
     }
