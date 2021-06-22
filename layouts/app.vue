@@ -14,8 +14,8 @@
     <!-- [Modal] Upgrade account -->
     <v-dialog v-model="modalUpgradeAccountOpen" fullscreen scrollable>
       <v-card>
-        <div class="d-flex">
-          <v-card-title>Upgrade your account</v-card-title>
+        <div class="d-flex ml-md-2 pb-0">
+          <v-card-title class="pb-1 pb-md-0">Upgrade your account</v-card-title>
 
           <v-spacer></v-spacer>
 
@@ -25,7 +25,7 @@
         </div>
 
         <div class="mx-2 mx-md-6">
-          <p class="pl-2 font-weight-light">
+          <p class="mb-md-0 pl-2 pl-md-0 font-weight-light">
             Unlock unlimited recording when you upgrade
           </p>
           <SubscriptionForm
