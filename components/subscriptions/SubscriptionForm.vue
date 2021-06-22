@@ -51,6 +51,7 @@
               large
               link
               :to="`${redirect}?plan=free`"
+              @click="onAfterButtonClick"
               >Get started for free</v-btn
             >
           </v-card-actions>
@@ -136,6 +137,7 @@
               large
               link
               :to="`${redirect}?plan=${proPlanName}`"
+              @click="onAfterButtonClick"
               >Upgrade to pro</v-btn
             >
           </v-card-actions>
@@ -190,6 +192,7 @@
               large
               link
               :to="`${redirect}?plan=lifetime`"
+              @click="onAfterButtonClick"
               >Get the lifetime deal</v-btn
             >
           </v-card-actions>
@@ -203,6 +206,10 @@
 export default {
   name: 'SubscriptionForm',
   props: {
+    onAfterButtonClick: {
+      type: Function,
+      default: () => {},
+    },
     redirect: {
       type: String,
       default: '/billing/subscribe',
