@@ -1,7 +1,7 @@
 <template>
   <section>
     <v-row>
-      <v-col cols="12" sm="6" md="4">
+      <v-col v-if="showFreeOption" cols="12" sm="6" md="4">
         <v-card class="my-4 py-6 px-8" :min-height="subscriptionCardMinHeight">
           <h2 class="secondary--text">
             <v-icon size="2rem">mdi-text-to-speech</v-icon> Basic
@@ -57,7 +57,7 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="6" md="4">
+      <v-col cols="12" sm="6" :md="paidOptionColMdSize">
         <v-card class="my-4 py-6 px-8" :min-height="subscriptionCardMinHeight">
           <div class="d-flex justify-space-between align-start">
             <h2 class="secondary--text">
@@ -144,7 +144,12 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" sm="8" md="4" class="mx-sm-auto">
+      <v-col
+        cols="12"
+        :sm="lifetimeOptionColSmSize"
+        :md="paidOptionColMdSize"
+        class="mx-sm-auto"
+      >
         <v-card class="my-4 py-6 px-8" :min-height="subscriptionCardMinHeight">
           <h2 class="secondary--text">
             <v-icon color="purple" size="2rem">mdi-trophy-award</v-icon>
@@ -214,6 +219,10 @@ export default {
       type: String,
       default: '/billing/subscribe',
     },
+    showFreeOption: {
+      type: Boolean,
+      default: () => true,
+    },
   },
   data() {
     return {
@@ -265,6 +274,15 @@ export default {
 
       const savings = monthlyPrice * 12 - annualMonthlyPrice * 12
       return savings
+    },
+
+    // Styling
+    paidOptionColMdSize() {
+      return this.showFreeOption ? 4 : 6
+    },
+
+    lifetimeOptionColSmSize() {
+      return this.showFreeOption ? 8 : 6
     },
   },
 }
