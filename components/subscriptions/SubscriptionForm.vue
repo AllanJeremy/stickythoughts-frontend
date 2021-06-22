@@ -99,7 +99,7 @@
               color="error"
               large
               link
-              :to="`${redirect}?plan=pro`"
+              :to="`${redirect}?plan=${proPlanName}`"
               >Upgrade to pro</v-btn
             >
           </v-card-actions>
@@ -169,6 +169,9 @@ export default {
     }
   },
   computed: {
+    proPlanName() {
+      return this.proPlanIsAnnual ? 'pro_yearly' : 'pro_monthly'
+    },
     proMonthlyPaymentTotal() {
       const { annualMonthlyPrice, monthlyPrice } = this.paidPlanPricing.pro
       return this.proPlanIsAnnual ? annualMonthlyPrice : monthlyPrice
