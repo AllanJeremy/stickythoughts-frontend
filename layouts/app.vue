@@ -9,6 +9,37 @@
       ></v-progress-linear>
     </v-fade-transition>
 
+    <!-- [Modal] Confirm logout -->
+
+    <!-- [Modal] Upgrade account -->
+    <v-dialog v-model="modalUpgradeAccountOpen" fullscreen scrollable>
+      <v-card>
+        <div class="d-flex">
+          <v-card-title>Upgrade your account</v-card-title>
+
+          <v-spacer></v-spacer>
+
+          <v-btn class="mt-3 mr-4" icon @click="modalUpgradeAccountOpen = false"
+            ><v-icon>mdi-close</v-icon>
+          </v-btn>
+        </div>
+
+        <div class="mx-2 mx-md-6">
+          <p class="pl-2 font-weight-light">
+            Unlock unlimited recording when you upgrade
+          </p>
+          <SubscriptionForm
+            :show-free-option="false"
+            :on-after-button-click="
+              () => {
+                modalUpgradeAccountOpen = false
+              }
+            "
+          />
+        </div>
+      </v-card>
+    </v-dialog>
+
     <!-- App bar -->
     <v-app-bar color="transparent" flat max-height="56px">
       <v-app-bar-nav-icon
@@ -18,7 +49,14 @@
       <v-spacer></v-spacer>
 
       <!-- Upgrade account -->
-      <v-btn class="mr-2" color="secondary" depressed small>Upgrade</v-btn>
+      <v-btn
+        class="mr-2"
+        color="secondary"
+        depressed
+        small
+        @click="modalUpgradeAccountOpen = true"
+        >Upgrade</v-btn
+      >
 
       <!-- Track playing in the background indicator -->
       <v-btn
@@ -138,15 +176,17 @@ import { mapState } from 'vuex'
 // Components
 import AudioPlayer from '@/components/audio/AudioPlayer.vue'
 import Loading from '@/components/Loading.vue'
+import SubscriptionForm from '@/components/subscriptions/SubscriptionForm.vue'
 
 // Mixins
 import { Analytics, NavMixin, UploadMixin } from '@/mixins'
 
 export default {
-  components: { AudioPlayer, Loading },
+  components: { AudioPlayer, Loading, SubscriptionForm },
   mixins: [Analytics.HotjarMixin, NavMixin, UploadMixin],
   data() {
     return {
+      modalUpgradeAccountOpen: false,
       navIsOpen: false,
       navItems: [
         { icon: 'mdi-microphone', title: 'Record', link: '/journal/record' },
