@@ -4,12 +4,10 @@
 
     <article>
       <div
-        class="d-flex flex-column justify-center align-center"
+        class="d-flex flex-column justify-center align-center text-center"
         style="min-height: 25vh; max-height: 300px"
       >
-        <h1 class="display-3 font-weight-bold text-center">
-          Remember everything
-        </h1>
+        <h1 class="display-3 font-weight-bold">Remember everything</h1>
         <p class="display-1 font-weight-light mt-4">
           Simple pricing to meet your needs
         </p>
