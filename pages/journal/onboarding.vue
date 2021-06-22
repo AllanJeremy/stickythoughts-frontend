@@ -164,7 +164,7 @@ import CustomizationForm from '@/components/forms/CustomizationForm.vue'
 import EmptyContainer from '@/components/EmptyContainer.vue'
 
 // Mixins
-import { NavMixin } from '@/mixins'
+import { NavMixin, SubscriptionMixin } from '@/mixins'
 
 export default {
   components: {
@@ -173,7 +173,7 @@ export default {
     CustomizationForm,
     EmptyContainer,
   },
-  mixins: [NavMixin],
+  mixins: [NavMixin, SubscriptionMixin],
   layout: 'onboarding',
   data() {
     return {
@@ -312,6 +312,8 @@ export default {
           console.error('Error details:', error)
         })
         .finally(() => {
+          this.redirectToSubscribe('https://stickythoughts.app/journal/record')
+
           // Wait 1 second before stopping the loading ~ gives time for redirects to occur without interruption
           setTimeout(() => {
             this.btnCompleteOnboardingLoading = false
