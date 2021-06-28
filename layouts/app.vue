@@ -248,7 +248,7 @@ export default {
         {
           icon: 'mdi-credit-card-multiple-outline',
           title: 'Subscriptions',
-          link: '/journal/subscriptions',
+          link: '/billing/subscriptions',
         },
         {
           icon: 'mdi-post-outline',
