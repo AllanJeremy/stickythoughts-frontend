@@ -164,8 +164,10 @@
         <v-list-item
           v-for="item in navItems"
           :key="item.title"
-          link
-          :to="item.link"
+          replace
+          :to="item.external ? undefined : item.link"
+          :href="item.external ? item.link : undefined"
+          :target="item.external ? '__blank' : undefined"
         >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
@@ -252,6 +254,7 @@ export default {
           icon: 'mdi-post-outline',
           title: 'Blog',
           link: 'https://blog.stickythoughts.app?utm-source=app',
+          external: true,
         },
       ],
 
