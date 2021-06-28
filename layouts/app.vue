@@ -144,6 +144,7 @@
       class="nav"
       src="/minimalist-white-workspace.jpg"
       app
+      :permanent="navDrawerIsPermanent"
     >
       <div
         class="bg-full"
@@ -280,6 +281,17 @@ export default {
     userFoundInDb() {
       // User was found in the db if we cab access their date joined (not available locally until fetched from db)
       return !this.userLoading && this.userData.categories
+    },
+
+    // Decides whether the navigation drawer is open by default or not
+    navDrawerIsPermanent() {
+      switch (this.$vuetify.breakpoint.name) {
+        case 'lg':
+          return true
+
+        default:
+          return false
+      }
     },
   },
   watch: {
