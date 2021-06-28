@@ -10,6 +10,30 @@
     </v-fade-transition>
 
     <!-- [Modal] Confirm logout -->
+    <v-dialog
+      v-if="modalConfirmLogoutOpen"
+      v-model="modalConfirmLogoutOpen"
+      persistent
+      max-width="25rem"
+    >
+      <v-card
+        ><v-card-title>Confirm logout?</v-card-title>
+
+        <v-card-text>
+          You'll need to login to access your journal entries
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn depressed @click="modalConfirmLogoutOpen = false"
+            >Cancel</v-btn
+          >
+          <v-spacer></v-spacer>
+          <v-btn depressed color="error" @click="confirmLogout"
+            >Yes, Logout</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <!-- [Modal] Upgrade account -->
     <v-dialog v-model="modalUpgradeAccountOpen" fullscreen scrollable>
@@ -151,6 +175,16 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item @click="modalConfirmLogoutOpen = true">
+          <v-list-item-icon>
+            <v-icon>mdi-logout-variant</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -178,15 +212,19 @@ import AudioPlayer from '@/components/audio/AudioPlayer.vue'
 import Loading from '@/components/Loading.vue'
 import SubscriptionForm from '@/components/subscriptions/SubscriptionForm.vue'
 
+// Language
+import { defaultErrorMessage } from '@/data/messages/feedback'
+
 // Mixins
-import { Analytics, NavMixin, UploadMixin } from '@/mixins'
+import { Analytics, AuthMixin, NavMixin, UploadMixin } from '@/mixins'
 
 export default {
   components: { AudioPlayer, Loading, SubscriptionForm },
-  mixins: [Analytics.HotjarMixin, NavMixin, UploadMixin],
+  mixins: [Analytics.HotjarMixin, AuthMixin, NavMixin, UploadMixin],
   data() {
     return {
       modalUpgradeAccountOpen: false,
+      modalConfirmLogoutOpen: false,
       navIsOpen: false,
       navItems: [
         { icon: 'mdi-microphone', title: 'Record', link: '/journal/record' },
@@ -215,7 +253,6 @@ export default {
           title: 'Blog',
           link: 'https://blog.stickythoughts.app?utm-source=app',
         },
-        { icon: 'mdi-logout-variant', title: 'Logout', link: '/auth/logout' },
       ],
 
       // Audio related
@@ -300,6 +337,23 @@ export default {
     //
     handleUploadComplete() {
       this.somethingIsUploading = false
+    },
+    confirmLogout() {
+      // What happens on successful logout
+      const _successHandler = () => {
+        this.modalConfirmLogoutOpen = false
+        this.$toast.success('Successfully logged you out')
+
+        window.location.href = '/auth/login'
+      }
+
+      // What happens when the logout fails
+      const _errorHandler = () => {
+        this.$toast.error(defaultErrorMessage)
+      }
+
+      // Actually logout the user
+      this.logout(_successHandler, _errorHandler)
     },
   },
 }
