@@ -1,8 +1,8 @@
 <template>
-  <section>
+  <section class="px-8">
     <div id="bg-subscription" class="bg-image bg-full"></div>
 
-    <article>
+    <article class="mt-8 mt-sm-0">
       <div
         class="d-flex flex-column justify-center align-center text-center"
         style="min-height: 25vh; max-height: 300px"
