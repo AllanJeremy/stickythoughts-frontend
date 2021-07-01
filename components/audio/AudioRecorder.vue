@@ -50,6 +50,12 @@ import { FormatMixin } from '@/mixins'
 export default {
   name: 'AudioRecorder',
   mixins: [FormatMixin],
+  props: {
+    onTimerUpdated: {
+      type: Function,
+      default: (recordedDurationSeconds) => {},
+    },
+  },
   data() {
     return {
       isRecording: false,
@@ -87,9 +93,10 @@ export default {
       this.timerInterval = setInterval(() => {
         this.recordingDurationSeconds++
 
+        this.onTimerUpdated(this.recordingDurationSeconds)
+
         // Activate recording controls after 2 seconds of recording
-        if (this.recordingDurationSeconds === 1) {
-          // ? Using equality right here 👆🏾 instead of >= to make sure this only runs once
+        if (this.recordingDurationSeconds >= 2) {
           this.recordingControlsActive = true
         }
       }, 1000)
