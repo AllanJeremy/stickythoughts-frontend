@@ -1,7 +1,12 @@
 <template>
   <v-app>
     <!-- Navigation drawer -->
-    <v-navigation-drawer v-model="navIsOpen" app style="z-index: 999">
+    <v-navigation-drawer
+      v-if="navShouldExist"
+      v-model="navIsOpen"
+      app
+      style="z-index: 999"
+    >
       <v-list-item class="d-flex">
         <v-list-item-content>
           <nuxt-link to="/">
@@ -118,6 +123,18 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    navShouldExist() {
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs':
+        case 'sm':
+          return true
+
+        default:
+          return false
+      }
+    },
   },
 }
 </script>
