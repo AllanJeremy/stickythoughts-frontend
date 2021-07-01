@@ -94,18 +94,7 @@
         <Nuxt />
       </v-container>
     </v-main>
-    <v-footer :absolute="!fixed" app>
-      <small class="mx-auto grey--text"
-        >Made with ♥ by
-        <a
-          class="grey--text"
-          href="https://www.allanjeremy.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          ><i>Allan Jeremy</i></a
-        >
-      </small>
-    </v-footer>
+    <v-footer :absolute="!fixed" app> </v-footer>
   </v-app>
 </template>
 
