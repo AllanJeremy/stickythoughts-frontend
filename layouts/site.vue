@@ -90,9 +90,7 @@
       ></v-app-bar-nav-icon>
     </v-toolbar>
     <v-main>
-      <v-container fluid>
-        <Nuxt />
-      </v-container>
+      <Nuxt />
     </v-main>
     <v-footer :absolute="!fixed" app> </v-footer>
   </v-app>
