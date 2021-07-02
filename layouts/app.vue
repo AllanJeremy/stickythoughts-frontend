@@ -309,6 +309,11 @@ export default {
 
     this.$nuxt.$on('playing', this.activateSomethingIsPlaying)
     this.$nuxt.$on('stoppedPlaying', this.deactivateSomethingIsPlaying)
+
+    //
+    this.$nuxt.$on('upgradeAccount', () => {
+      this.modalUpgradeAccountOpen = true
+    })
   },
   methods: {
     // Audio related
