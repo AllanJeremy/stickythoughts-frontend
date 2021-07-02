@@ -208,6 +208,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { mapState } from 'vuex'
 
 // Components
@@ -314,6 +315,20 @@ export default {
     this.$nuxt.$on('upgradeAccount', () => {
       this.modalUpgradeAccountOpen = true
     })
+
+    // Provide the user with feedback if the payment was successful
+    const routeQuery = this.$route.query
+    if (!_.isEmpty(routeQuery.status) && routeQuery.status === 'successful') {
+      switch (routeQuery.status.toLowerCase()) {
+        case 'successful':
+          this.$toast.success(
+            'Payment successful. Your account will be upgraded shortly'
+          )
+          break
+        default:
+          this.$toast.info("Payment processing... We'll keep you updated")
+      }
+    }
   },
   methods: {
     // Audio related
