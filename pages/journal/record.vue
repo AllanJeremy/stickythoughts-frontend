@@ -1,5 +1,29 @@
 <template>
   <div>
+    <v-dialog v-model="modalRecordingLimitOpen" max-width="30rem">
+      <v-card>
+        <v-card-title class="text-error">Recording limit reached</v-card-title>
+
+        <article class="px-6">
+          <p class="font-weight-light">
+            You have reached the recording limit of
+            {{ recordingLimitMinutes }} minutes for your free account. Kindly
+            upgrade your account to get unlimited recording plus more.
+          </p>
+        </article>
+
+        <v-card-actions>
+          <v-btn depressed @click="modalRecordingLimitOpen = false"
+            >No, thanks</v-btn
+          >
+          <v-spacer></v-spacer>
+          <v-btn depressed color="secondary" @click="handleUpgradeAccount"
+            >Upgrade <span class="d-none d-sm-inline">my account</span></v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-tabs
       class="mb-8"
       color="teal"
@@ -35,14 +59,18 @@
         ></v-textarea>
       </div>
 
-      <AudioRecorder />
+      <AudioRecorder :on-timer-updated="limitRecording" />
     </section>
   </div>
 </template>
 
 <script>
+//
 import _ from 'lodash'
 import { mapState } from 'vuex'
+
+// Config
+import { FREE_RECORDING_LIMIT_SECONDS } from '@/config'
 
 // API handlers
 import { journalApi } from '@/apiRequests'
@@ -70,6 +98,9 @@ export default {
       uploadProgress: 0,
       currentUploadTask: null,
       journalData: {},
+
+      //
+      modalRecordingLimitOpen: false,
     }
   },
   head() {
@@ -90,6 +121,13 @@ export default {
       // If categories were found - select the first one among the sorted ones
 
       return sortedCategories
+    },
+
+    //
+    recordingLimitMinutes() {
+      const minutes = FREE_RECORDING_LIMIT_SECONDS / 60
+
+      return Math.ceil(minutes)
     },
   },
   watch: {
@@ -212,6 +250,19 @@ export default {
     uploadAudio(file, fileName, metadata) {
       const fullFilePath = `audio/${fileName}`
       return this.uploadFile(file, fullFilePath, metadata)
+    },
+
+    limitRecording(recordingDurationSeconds) {
+      if (recordingDurationSeconds === FREE_RECORDING_LIMIT_SECONDS + 1) {
+        this.$toast.info('Free account recording limit reached')
+        this.modalRecordingLimitOpen = true
+        this.$nuxt.$emit('completeRecording')
+      }
+    },
+
+    handleUpgradeAccount() {
+      this.modalRecordingLimitOpen = false
+      this.$nuxt.$emit('upgradeAccount')
     },
   },
 }
