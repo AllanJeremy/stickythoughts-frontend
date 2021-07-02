@@ -84,6 +84,9 @@ export default {
   created() {
     this.recordingIsSupported =
       navigator.mediaDevices && navigator.mediaDevices.getUserMedia
+
+    // Accept events
+    this.$nuxt.$on('completeRecording', this.completeRecording)
   },
   methods: {
     startRecordingTimer() {
