@@ -96,7 +96,10 @@ export default {
         this.onTimerUpdated(this.recordingDurationSeconds)
 
         // Activate recording controls after 2 seconds of recording
-        if (this.recordingDurationSeconds >= 2) {
+        if (
+          this.recordingDurationSeconds >= 2 &&
+          !this.recordingControlsActive
+        ) {
           this.recordingControlsActive = true
         }
       }, 1000)
