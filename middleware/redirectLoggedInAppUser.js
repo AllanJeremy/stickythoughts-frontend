@@ -2,7 +2,6 @@ import { getLinkWithQueryParams } from '../helpers/redirect'
 
 //
 const redirectLoggedInAppUser = ({ redirect, route, store }) => {
-  console.log(route)
   // Keep checking until we get a user
   const interval = setInterval(() => {
     const { data: userData } = store.state.user
