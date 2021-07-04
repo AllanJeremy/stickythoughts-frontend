@@ -8,6 +8,7 @@ import Analytics from './Analytics'
 import FormatMixin from './FormatMixin'
 import JournalMixin from './JournalMixin'
 import NavMixin from './NavMixin'
+import ShareMixin from './ShareMixin'
 import SubscriptionMixin from './SubscriptionMixin'
 import UploadMixin from './UploadMixin'
 
@@ -19,6 +20,7 @@ export {
   FormatMixin,
   JournalMixin,
   NavMixin,
+  ShareMixin,
   SubscriptionMixin,
   UploadMixin,
 }
