@@ -139,7 +139,7 @@
       </v-menu>
 
       <!-- Share StickyThoughts -->
-      <v-btn icon>
+      <v-btn icon @click="shareApp">
         <v-icon>mdi-share-variant</v-icon>
       </v-btn>
     </v-app-bar>
@@ -226,11 +226,17 @@ import SubscriptionForm from '@/components/subscriptions/SubscriptionForm.vue'
 import { defaultErrorMessage } from '@/data/messages/feedback'
 
 // Mixins
-import { Analytics, AuthMixin, NavMixin, UploadMixin } from '@/mixins'
+import {
+  Analytics,
+  AuthMixin,
+  NavMixin,
+  ShareMixin,
+  UploadMixin,
+} from '@/mixins'
 
 export default {
   components: { AudioPlayer, Loading, SubscriptionForm },
-  mixins: [Analytics.HotjarMixin, AuthMixin, NavMixin, UploadMixin],
+  mixins: [Analytics.HotjarMixin, AuthMixin, NavMixin, ShareMixin, UploadMixin],
   data() {
     return {
       modalUpgradeAccountOpen: false,
