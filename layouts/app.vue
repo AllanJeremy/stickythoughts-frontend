@@ -79,7 +79,7 @@
 
       <!-- Upgrade account -->
       <v-btn
-        v-if="!userIsSubscribed"
+        v-if="userFoundInDb && !userIsSubscribed"
         class="mr-2"
         color="secondary"
         depressed
