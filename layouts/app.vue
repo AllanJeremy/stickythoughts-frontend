@@ -36,7 +36,12 @@
     </v-dialog>
 
     <!-- [Modal] Upgrade account -->
-    <v-dialog v-model="modalUpgradeAccountOpen" fullscreen scrollable>
+    <v-dialog
+      v-if="!userIsSubscribed"
+      v-model="modalUpgradeAccountOpen"
+      fullscreen
+      scrollable
+    >
       <v-card>
         <div class="d-flex ml-md-2 pb-0">
           <v-card-title class="pb-1 pb-md-0">Upgrade your account</v-card-title>
@@ -74,6 +79,7 @@
 
       <!-- Upgrade account -->
       <v-btn
+        v-if="!userIsSubscribed"
         class="mr-2"
         color="secondary"
         depressed
@@ -282,6 +288,13 @@ export default {
     userFoundInDb() {
       // User was found in the db if we cab access their date joined (not available locally until fetched from db)
       return !this.userLoading && this.userData.categories
+    },
+
+    //
+    userIsSubscribed() {
+      const subscription = this.userData.subscription || null
+
+      return subscription ? subscription.isActive : false
     },
 
     // Decides whether the navigation drawer is open by default or not
