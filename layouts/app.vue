@@ -147,7 +147,7 @@
     <v-navigation-drawer
       v-if="userFoundInDb"
       v-model="navIsOpen"
-      class="nav"
+      class="nav d-flex flex-column justify-spaced-between"
       src="/minimalist-white-workspace.jpg"
       app
       :permanent="navDrawerIsPermanent"
@@ -268,6 +268,12 @@ export default {
           icon: 'mdi-post-outline',
           title: 'Blog',
           link: 'https://blog.stickythoughts.app?utm-source=app',
+          external: true,
+        },
+        {
+          icon: 'mdi-discord',
+          title: 'Community (Discord)',
+          link: 'https://discord.gg/Epyhp5B3wq',
           external: true,
         },
       ],
