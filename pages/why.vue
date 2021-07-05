@@ -32,11 +32,11 @@
         We do less so you can do more
       </h1>
       <h2 class="display-1 grey--text mb-4">
-        Most note-taking apps do too much.
+        The simplest way to journal with your voice.
       </h2>
       <p class="font-weight-light">
-        StickyThoughts strives to be the simplest way to journal with your
-        voice.
+        We take security seriously and use the same servers that Google uses to
+        protect your thoughts.
       </p>
 
       <v-btn class="white--text" depressed color="teal" to="/auth/login" x-large
