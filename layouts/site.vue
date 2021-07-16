@@ -97,7 +97,6 @@
     <v-main>
       <Nuxt />
     </v-main>
-    <v-footer :absolute="!fixed" app> </v-footer>
   </v-app>
 </template>
 
@@ -105,7 +104,6 @@
 export default {
   data() {
     return {
-      fixed: false,
       navIsOpen: false,
       navItems: [
         {
