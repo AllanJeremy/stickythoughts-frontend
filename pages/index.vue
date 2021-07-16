@@ -28,7 +28,8 @@
       <img
         src="/mockup.png"
         alt="StickyThoughts audio notes mockup"
-        height="100%"
+        width="800"
+        style="max-width: 100%"
       />
     </div>
   </div>
