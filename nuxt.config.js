@@ -65,8 +65,8 @@ export default {
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
-      name: 'StickyThoughts - Remember Everything',
-      short_name: 'S-Thoughts',
+      name: '',
+      short_name: 'StickyThoughts',
       description: 'Simple audio journaling on all your devices.',
       lang: 'en',
       background_color: '#FFF2CA',
