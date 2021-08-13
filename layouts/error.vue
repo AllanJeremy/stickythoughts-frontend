@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <section class="fill-height text-center">
+    <section class="fill-height text-center my-4">
       <template v-if="error.statusCode === 404">
         <img
           class="background mx-auto"
