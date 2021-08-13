@@ -1,7 +1,7 @@
 <template>
   <div>
     <article
-      class="text-center d-flex flex-column justify-center align-center"
+      class="text-center d-flex flex-column justify-center align-center pa-3"
       style="min-height: 50vh"
     >
       <h1 class="font-weight-bold" :style="`font-size: ${ctaTextFontSize}`">
